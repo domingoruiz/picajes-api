@@ -1,0 +1,6 @@
+.idea/
+config.php
+NO_GIT/
+other_files/logs/*
+/vendor/
+other_files/EJECUCIONES

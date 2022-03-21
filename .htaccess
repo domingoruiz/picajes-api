@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /picajes/
+options +FollowSymLinks
+RewriteCond %{HTTPS}  !=on
+RewriteRule ^/?(.*) https://192.168.153.135/picajes/$0 [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* index.php/$0 [L]
