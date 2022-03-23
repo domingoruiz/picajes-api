@@ -109,7 +109,7 @@ class model {
     		next($data);
     	}
     	$values = substr($values, 0, -1);
-
+        
     	$result = $this->query('INSERT INTO '.$table.' ('.$listcolumn.') VALUES ('.$values.')');
         if($result) {
             return TRUE;
@@ -139,7 +139,7 @@ class model {
             $wheres .= '('.$key.'=\''.$value.'\')AND';
         }
         $wheres = substr($wheres, 0, -3);
-
+        
         $result = $this->query('UPDATE '.$table.' SET '.$values.' WHERE '.$wheres);
         
         if($result) {
@@ -200,7 +200,7 @@ class model {
              $orders .= ' `'.$key.'` '.$value.', ';
         }
         $orders = substr($orders, 0, -2);
-
+        
         return $this->query('SELECT * FROM '.$table.' '.$wheres.' '.$orders);
     }
 

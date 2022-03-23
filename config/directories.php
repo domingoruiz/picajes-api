@@ -16,6 +16,3 @@ define("ROUTECONTROLLER",    ROUTEAPI.'controller/');
 define("ROUTEMODEL",         ROUTEAPI.'model/');
 define("ROUTEOBJECTS",       ROUTEAPI.'objects/');
 define("ROUTEOTHERFILES",    ROOTDIRECTORY.'other_files/');
-
-define("ROUTEPICAJESCONECT",     ROUTEOTHERFILES.'PICAJESconect/');
-define("ROUTELOG",           ROUTEOTHERFILES.'logs/');

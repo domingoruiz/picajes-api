@@ -41,8 +41,6 @@ class inicioController extends controller {
      * @return salida
      */
     public function cron() {
-        \GMV\objects\sesion::puestos_inactivos();
-
         return (new salida());
     }
 

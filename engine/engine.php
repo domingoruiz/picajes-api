@@ -20,7 +20,7 @@ class api {
      */
     function json() {
         // Error reporting a 0. Más adelante se pondra a 1 si es necesario.
-        error_reporting(0);
+        //error_reporting(0);
 
         // Cargamos la configuración necesaria
         require_once __DIR__.'/../config.php';
@@ -48,20 +48,8 @@ class api {
             require_once $file;
         }
 
-        // Definimos el número de ejecucion
-        $file = fopen(ROUTEOTHERFILES."EJECUCIONES", "r");
-        $return = fgets($file);
-        fclose($file);
-
-        $file = fopen(ROUTEOTHERFILES."EJECUCIONES", "w");
-        fwrite($file, $return+1);
-        fclose($file);
-
-        define("EJECUCION", $return+1);
-
         // Iniciamos las globales
         global $model;
-        global $proxmox;
 
         // Configuración inicial
         header("Access-Control-Allow-Origin: *");
@@ -132,26 +120,14 @@ class api {
             $parametros["URL"] = $cadena_url;
 
             // Validamos que este logueado
-            if(!($metodo_peticion == "GET" && $peticion == "cron") && !($metodo_peticion == "GET" && $peticion == "") && !($metodo_peticion == "GET" && $peticion == "usuarios.login") && !($metodo_peticion == "GET" && $peticion == "grupos.puestos.login")) {
+            if(!($metodo_peticion == "GET" && $peticion == "cron") && !($metodo_peticion == "GET" && $peticion == "") && !($metodo_peticion == "GET" && $peticion == "usuarios.login")) {
                 $sesion = new \PICAJES\objects\sesion;
                 $sesion->set_token_sesion($parametros["GET"]["token_sesion"]);
                 $sesion->establish("token_sesion");
 
                 if(!empty($sesion->get_id())) {
-                    if(empty($sesion->get_puesto())) {
-                        $controller = new $controller();
-                        $json = $controller->$action($parametros)->generar_salida();
-                    }else{
-                        if($parametros["URL"][5] != $sesion->get_puesto()) {
-                            $salida = new \PICAJES\helpers\salida();
-                            $salida->set_id_error(401);
-                            $salida->set_error("Sesión no autorizada a trabajar con ese puesto");
-                            $json = $salida->generar_salida();
-                        }else{
-                            $controller = new $controller();
-                            $json = $controller->$action($parametros)->generar_salida();
-                        }
-                    }
+                    $controller = new $controller();
+                    $json = $controller->$action($parametros)->generar_salida();
                 }else{
                     $salida = new \PICAJES\helpers\salida();
                     $salida->set_id_error(401);
@@ -177,13 +153,13 @@ class api {
             }else{
                 $salida = new \PICAJES\helpers\salida();
                 $salida->set_id_error(500);
-                $salida->set_error("No se ha devuelto respuesta. Ejecución número: ".EJECUCIONES);
+                $salida->set_error("No se ha devuelto respuesta.");
                 return $salida->generar_salida();
             }
         }else{
             $salida = new \PICAJES\helpers\salida();
             $salida->set_id_error(500);
-            $salida->set_error("ERROR con la base de datos. Consultar LOG errores. No se han guardado cambios en Proxmox. Ejecución núemro: ".EJECUCIONES);
+            $salida->set_error("ERROR con la base de datos. Consultar LOG errores.");
             return $salida->generar_salida();
         }
     }
