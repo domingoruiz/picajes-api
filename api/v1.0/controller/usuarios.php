@@ -32,7 +32,6 @@ class usuarioController extends controller {
      * @return salida
      */
     function login($parametros) {
-        echo "asd";
         $username = $parametros["GET"]["username"];
         $password = $parametros["GET"]["password"];
 
@@ -106,6 +105,9 @@ class usuarioController extends controller {
                     "usuario" => $user->get_usuario(),
                     "password" => $user->get_contrasenia(),
                     "email" => $user->get_email(),
+                    "telefono" => $user->get_telefono(),
+                    "empresa" => $user->get_empresa(),
+                    "equipo" => $user->get_equipo(),
                     "nombre" => $user->get_nombre()
                 );
 
@@ -135,8 +137,11 @@ class usuarioController extends controller {
         $email = $parametros["GET"]["email"];
         $usuario = $parametros["GET"]["usuario"];
         $password = $parametros["GET"]["password"];
+        $telefono = $parametros["GET"]["telefono"];
+        $empresa = $parametros["GET"]["empresa"];
+        $equipo = $parametros["GET"]["equipo"];
 
-        if(!empty($nombre) && $email && !empty($usuario) && !empty($password)) {
+        if(!empty($nombre) && $email && !empty($usuario) && !empty($password) && !empty($empresa) && !empty($equipo)) {
             if(!empty($id)) {
                 $user = new \PICAJES\objects\user($id);
                 if(!empty($user->get_usuario())) {
@@ -144,6 +149,9 @@ class usuarioController extends controller {
                     $user->set_email($email);
                     $user->set_usuario($usuario);
                     $user->set_contrasenia($password);
+                    $user->set_telefono($telefono);
+                    $user->set_empresa($empresa);
+                    $user->set_equipo($equipo);
 
                     if($user->update()) {
                         $salida = new salida();
@@ -172,6 +180,9 @@ class usuarioController extends controller {
                     $user->set_contrasenia($password);
                     $user->set_nombre($nombre);
                     $user->set_email($email);
+                    $user->set_telefono($telefono);
+                    $user->set_empresa($empresa);
+                    $user->set_equipo($equipo);
 
                     if($user->create()) {
                         $user->establish("usuario");

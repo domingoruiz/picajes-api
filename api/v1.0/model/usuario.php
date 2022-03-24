@@ -47,16 +47,22 @@ class userModel {
      * @param string $password Contraseña (en MD5)
      * @param string $nombre Nombre del usuario
      * @param string $email Email del usuario
+     * @param string $telefono
+     * @param int $empresa
+     * @param int $equipo
      * @return boolean
     */
-    function guardar(string $username, string $password, string $nombre, string $email) {
+    function guardar(string $username, string $password, string $nombre, string $email, string $telefono, int $empresa, int $equipo) {
         return $this->model->insert(
                 TABLE_usuario, 
                 array(
                     TABLE_usuario_COLUMNA_usuario => $username, 
                     TABLE_usuario_COLUMNA_contrasenia => $password, 
                     TABLE_usuario_COLUMNA_nombre => $nombre,
-                    TABLE_usuario_COLUMNA_email => $email
+                    TABLE_usuario_COLUMNA_email => $email,
+                    TABLE_usuario_COLUMNA_telefono => $telefono,
+                    TABLE_usuario_COLUMNA_empresa => $empresa,
+                    TABLE_usuario_COLUMNA_equipo => $equipo
                     )
                 );
     }
@@ -70,16 +76,22 @@ class userModel {
      * @param string $password
      * @param string $nombre
      * @param string $email
+     * @param string $telefono
+     * @param int $empresa
+     * @param int $equipo
      * @return boolean
      */
-    function update(int $user_id, string $username, string $password, string $nombre, string $email) {
+    function update(int $user_id, string $username, string $password, string $nombre, string $email, string $telefono, int $empresa, int $equipo) {
         return $this->model->update(
                 TABLE_usuario, 
                 array(
                     TABLE_usuario_COLUMNA_usuario => $username, 
                     TABLE_usuario_COLUMNA_contrasenia => $password, 
                     TABLE_usuario_COLUMNA_nombre => $nombre,
-                    TABLE_usuario_COLUMNA_email => $email
+                    TABLE_usuario_COLUMNA_email => $email,
+                    TABLE_usuario_COLUMNA_telefono => $telefono,
+                    TABLE_usuario_COLUMNA_empresa => $empresa,
+                    TABLE_usuario_COLUMNA_equipo => $equipo
                      ),
                 array(
                     TABLE_usuario_COLUMNA_id => $user_id
@@ -107,6 +119,16 @@ class userModel {
         }else{
            return FALSE; 
         }
+    }
+
+     /**
+     * Obtenemos un query de todos los usuarios
+     *
+     * @access public
+     * @return object
+     */
+    function get_todos() {
+        return $this->model->only_query(TABLE_usuario);
     }
 
     /**

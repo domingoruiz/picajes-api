@@ -311,7 +311,7 @@ class user {
               $this->set_contrasenia($data[TABLE_usuario_COLUMNA_contrasenia]);
               $this->set_nombre($data[TABLE_usuario_COLUMNA_nombre]);
               $this->set_email($data[TABLE_usuario_COLUMNA_email]);
-              $this->set_telefono($data[TABLE_usuario_COLUMNA_email]);
+              $this->set_telefono($data[TABLE_usuario_COLUMNA_telefono]);
               $this->set_empresa($data[TABLE_usuario_COLUMNA_empresa]);
               $this->set_equipo($data[TABLE_usuario_COLUMNA_equipo]);
               
@@ -342,7 +342,10 @@ class user {
                         $this->get_usuario(), 
                         $this->get_contrasenia(), 
                         $this->get_nombre(),
-                        $this->get_email()
+                        $this->get_email(),
+                        $this->get_telefono(),
+                        $this->get_empresa(),
+                        $this->get_equipo()
                       );
 
             if(\PICAJES\helpers\arrays::array_equal($ok)) {
@@ -379,7 +382,7 @@ class user {
     */
     public function update() {
         if(!empty($this->get_id())) {
-           return $this->model->update($this->get_id(), $this->get_usuario(), $this->get_contrasenia(), $this->get_nombre(), $this->get_email());
+           return $this->model->update($this->get_id(), $this->get_usuario(), $this->get_contrasenia(), $this->get_nombre(), $this->get_email(), $this->get_telefono(), $this->get_empresa(), $this->get_equipo());
         }else{
             return FALSE;
         }
