@@ -125,13 +125,71 @@ class usuarioController extends controller {
     }
 
     /**
-     * Operación de la api que crea o actualiza un usuario
+     * Operación de la api que crea un usuario
+     *
+     * @access public
+     * @param array $parametros Parametros obtenidos por la URI y POST
+     * @return salida
+     */
+    function crear_usuario($parametros) {
+        $nombre = $parametros["POST"]["nombre"];
+        $email = $parametros["POST"]["email"];
+        $usuario = $parametros["POST"]["usuario"];
+        $password = $parametros["POST"]["password"];
+        $telefono = $parametros["POST"]["telefono"];
+        $empresa = $parametros["POST"]["empresa"];
+        $equipo = $parametros["POST"]["equipo"];
+
+        if(!empty($nombre) && $email && !empty($usuario) && !empty($password) && !empty($empresa) && !empty($equipo)) {
+            $user = new \PICAJES\objects\user;
+            $user->set_usuario($usuario);
+            $user->establish("usuario");
+
+            if(empty($user->get_id())) {
+                $user = new \PICAJES\objects\user();
+                $user->set_usuario($usuario);
+                $user->set_contrasenia($password);
+                $user->set_nombre($nombre);
+                $user->set_email($email);
+                $user->set_telefono($telefono);
+                $user->set_empresa($empresa);
+                $user->set_equipo($equipo);
+
+                if($user->create()) {
+                    $user->establish("usuario");
+
+                    $salida = new salida();
+                    $salida->set_id_error(201);
+                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/usuarios/".$user->get_id()."/");
+                    return $salida;
+                }else{
+                    $salida = new salida();
+                    $salida->set_id_error(500);
+                    $salida->set_error("Error creando el usuario");
+                    return $salida;
+                }
+            }else{
+                $salida = new salida();
+                $salida->set_id_error(400);
+                $salida->set_error("Ya existe un usuario con ese usuario");
+                return $salida;
+            }
+        }else{
+            $salida = new salida();
+            $salida->set_id_error(400);
+            $salida->set_error("Faltan parametros requeridos");
+            return $salida;
+        }
+    }
+
+    /**
+     * Operación de la api que actualiza un usuario
      *
      * @access public
      * @param array $parametros Parametros obtenidos por la URI y GET
      * @return salida
      */
-    function crear_actualizar_usuario($parametros) {
+    function actualizar_usuario($parametros) {
         $id = $parametros["URL"]["3"];
         $nombre = $parametros["GET"]["nombre"];
         $email = $parametros["GET"]["email"];
@@ -170,39 +228,10 @@ class usuarioController extends controller {
                     return $salida;
                 }
             }else{
-                $user = new \PICAJES\objects\user;
-                $user->set_usuario($usuario);
-                $user->establish("usuario");
-
-                if(empty($user->get_id())) {
-                    $user = new \PICAJES\objects\user();
-                    $user->set_usuario($usuario);
-                    $user->set_contrasenia($password);
-                    $user->set_nombre($nombre);
-                    $user->set_email($email);
-                    $user->set_telefono($telefono);
-                    $user->set_empresa($empresa);
-                    $user->set_equipo($equipo);
-
-                    if($user->create()) {
-                        $user->establish("usuario");
-
-                        $salida = new salida();
-                        $salida->set_id_error(201);
-                        $salida->set_salida(HOST_COMPLETO.VERSION_API."/usuarios/".$user->get_id()."/");
-                        return $salida;
-                    }else{
-                        $salida = new salida();
-                        $salida->set_id_error(500);
-                        $salida->set_error("Error creando el usuario");
-                        return $salida;
-                    }
-                }else{
-                    $salida = new salida();
-                    $salida->set_id_error(400);
-                    $salida->set_error("Ya existe un usuario con ese usuario");
-                    return $salida;
-                }
+                $salida = new salida();
+                $salida->set_id_error(400);
+                $salida->set_error("No se ha definido id");
+                return $salida;
             }
         }else{
             $salida = new salida();

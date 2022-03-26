@@ -73,13 +73,67 @@ class empresaController extends controller {
     }
 
     /**
-     * Operación de la api que crea o actualiza un empresa
+     * Operación de la api que crea una empresa
+     *
+     * @access public
+     * @param array $parametros Parametros obtenidos por la URI y POST
+     * @return salida
+     */
+    function crear_empresa($parametros) {
+        $nombre = $parametros["POST"]["nombre"];
+        $nif = $parametros["POST"]["nif"];
+        $direccion = $parametros["POST"]["direccion"];
+        $telefono = $parametros["POST"]["telefono"];
+        $email = $parametros["POST"]["email"];
+
+        if(!empty($nombre) && $email && !empty($nif) && !empty($direccion) && !empty($telefono) && !empty($email)) {
+            $empresa = new \PICAJES\objects\empresa;
+            $empresa->set_nif($nif);
+            $empresa->establish("nif");
+
+            if(empty($empresa->get_id())) {
+                $empresa = new \PICAJES\objects\empresa();
+                $empresa->set_nombre($nombre);
+                $empresa->set_nif($nif);
+                $empresa->set_direccion($direccion);
+                $empresa->set_telefono($telefono);
+                $empresa->set_email($email);
+
+                if($empresa->create()) {
+                    $empresa->establish("nif");
+
+                    $salida = new salida();
+                    $salida->set_id_error(201);
+                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/empresas/".$empresa->get_id()."/");
+                    return $salida;
+                }else{
+                    $salida = new salida();
+                    $salida->set_id_error(500);
+                    $salida->set_error("Error creando el empresa");
+                    return $salida;
+                }
+            }else{
+                $salida = new salida();
+                $salida->set_id_error(400);
+                $salida->set_error("Ya existe un empresa con ese nif");
+                return $salida;
+            }
+        }else{
+            $salida = new salida();
+            $salida->set_id_error(400);
+            $salida->set_error("Faltan parametros requeridos");
+            return $salida;
+        }
+    }
+
+    /**
+     * Operación de la api que actualiza una empresa
      *
      * @access public
      * @param array $parametros Parametros obtenidos por la URI y GET
      * @return salida
      */
-    function crear_actualizar_empresa($parametros) {
+    function actualizar_empresa($parametros) {
         $id = $parametros["URL"]["3"];
         $nombre = $parametros["GET"]["nombre"];
         $nif = $parametros["GET"]["nif"];
@@ -114,37 +168,10 @@ class empresaController extends controller {
                     return $salida;
                 }
             }else{
-                $empresa = new \PICAJES\objects\empresa;
-                $empresa->set_id($id);
-                $empresa->establish("id");
-
-                if(empty($empresa->get_id())) {
-                    $empresa = new \PICAJES\objects\empresa();
-                    $empresa->set_nombre($nombre);
-                    $empresa->set_nif($nif);
-                    $empresa->set_direccion($direccion);
-                    $empresa->set_telefono($telefono);
-                    $empresa->set_email($email);
-
-                    if($empresa->create()) {
-                        $empresa->establish("nif");
-
-                        $salida = new salida();
-                        $salida->set_id_error(201);
-                        $salida->set_salida(HOST_COMPLETO.VERSION_API."/empresas/".$empresa->get_id()."/");
-                        return $salida;
-                    }else{
-                        $salida = new salida();
-                        $salida->set_id_error(500);
-                        $salida->set_error("Error creando el empresa");
-                        return $salida;
-                    }
-                }else{
-                    $salida = new salida();
-                    $salida->set_id_error(400);
-                    $salida->set_error("Ya existe un empresa con ese empresa");
-                    return $salida;
-                }
+                $salida = new salida();
+                $salida->set_id_error(400);
+                $salida->set_error("ID no definido");
+                return $salida;
             }
         }else{
             $salida = new salida();
@@ -153,6 +180,7 @@ class empresaController extends controller {
             return $salida;
         }
     }
+
 
     /**
      * Operación de la api que elimina un empresa
