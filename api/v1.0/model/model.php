@@ -72,22 +72,12 @@ class model {
     public function query($query) {
         $result = $this->con->query($query);
         
-        $cadena = "[".date("Y-m-d h:i:s")."]"." [".EJECUCION."] ".preg_replace("/[\r\n|\n|\r]+/", "", $query);
-        $file = fopen(ROUTELOG.LOGSQL, "a");
-        fwrite($file, $cadena . PHP_EOL);
-        fclose($file);
-
-        if($this->con->error) {
-            $cadena = "[".date("Y-m-d h:i:s")."] [".EJECUCION."]"." ERROR SQL".$this->con->error;
-
-            $file = fopen(ROUTELOG.LOGERRORES, "a");
-            fwrite($file, $cadena . PHP_EOL);
-            fclose($file);
-        }
-        
         if($result) {
             return $result;
         }else{
+            if(DESARROLLO) {
+                $GLOBALS["error_sql"] .= "QUERY: ".$query." ERROR: ".$this->con->error;
+            }
             return FALSE;
         }
     }

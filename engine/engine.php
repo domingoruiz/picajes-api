@@ -50,6 +50,7 @@ class api {
 
         // Iniciamos las globales
         global $model;
+        global $error_sql;
 
         // Configuración inicial
         header("Access-Control-Allow-Origin: *");
@@ -149,7 +150,14 @@ class api {
         //todos sea correcto mandamos al navegador la respuesta en forma de HTML
         if($GLOBALS["model"]->__destruct()) {
             if($json) {
-                return $json;
+                if($GLOBALS["error_sql"]) {
+                    $salida = new \PICAJES\helpers\salida();
+                    $salida->set_id_error(500);
+                    $salida->set_error($GLOBALS["error_sql"]);
+                    return $salida->generar_salida();
+                }else{
+                    return $json;
+                }
             }else{
                 $salida = new \PICAJES\helpers\salida();
                 $salida->set_id_error(500);
