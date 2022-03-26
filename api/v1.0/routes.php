@@ -18,4 +18,9 @@ $routes['POST.empresas'] =                                           array("empr
 $routes['PUT.empresas'] =                                            array("empresaController", "actualizar_empresa");
 $routes['DELETE.empresas'] =                                         array("empresaController", "eliminar_empresa");
 
+$routes['GET.equipos'] =                                             array("equipoController", "obtener_datos");
+$routes['POST.equipos'] =                                            array("equipoController", "crear_equipo");
+$routes['PUT.equipos'] =                                             array("equipoController", "actualizar_equipo");
+$routes['DELETE.equipos'] =                                          array("equipoController", "eliminar_equipo");
+
 define("routes", $routes);

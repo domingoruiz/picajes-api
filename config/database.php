@@ -33,3 +33,8 @@ define('TABLE_empresas',                       PREFIJO_BD.'empresas');
       define('TABLE_empresas_COLUMNA_direccion',             'direccion');
       define('TABLE_empresas_COLUMNA_telefono',              'telefono');
       define('TABLE_empresas_COLUMNA_email',                 'email');
+
+define('TABLE_equipos',                       PREFIJO_BD.'equipos');
+      define('TABLE_equipos_COLUMNA_id',                     'id');
+      define('TABLE_equipos_COLUMNA_nombre',                 'nombre');
+      define('TABLE_equipos_COLUMNA_empresa',                'empresa');
