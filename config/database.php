@@ -38,3 +38,8 @@ define('TABLE_equipos',                       PREFIJO_BD.'equipos');
       define('TABLE_equipos_COLUMNA_id',                     'id');
       define('TABLE_equipos_COLUMNA_nombre',                 'nombre');
       define('TABLE_equipos_COLUMNA_empresa',                'empresa');
+
+define('TABLE_zonas',                       PREFIJO_BD.'zonas');
+      define('TABLE_zonas_COLUMNA_id',                     'id');
+      define('TABLE_zonas_COLUMNA_nombre',                 'nombre');
+      define('TABLE_zonas_COLUMNA_empresa',                'empresa');
