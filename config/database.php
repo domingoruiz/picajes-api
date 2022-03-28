@@ -43,3 +43,8 @@ define('TABLE_zonas',                       PREFIJO_BD.'zonas');
       define('TABLE_zonas_COLUMNA_id',                     'id');
       define('TABLE_zonas_COLUMNA_nombre',                 'nombre');
       define('TABLE_zonas_COLUMNA_empresa',                'empresa');
+
+define('TABLE_puestofichajes',                       PREFIJO_BD.'puestofichaje');
+      define('TABLE_puestofichajes_COLUMNA_id',                'id');
+      define('TABLE_puestofichajes_COLUMNA_nombre',            'nombre');
+      define('TABLE_puestofichajes_COLUMNA_zona',              'zona');

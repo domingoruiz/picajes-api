@@ -28,4 +28,9 @@ $routes['POST.zonas'] =                                              array("zona
 $routes['PUT.zonas'] =                                               array("zonaController", "actualizar_zona");
 $routes['DELETE.zonas'] =                                            array("zonaController", "eliminar_zona");
 
+$routes['GET.puestofichajes'] =                                      array("puestofichajeController", "obtener_datos");
+$routes['POST.puestofichajes'] =                                     array("puestofichajeController", "crear_puestofichaje");
+$routes['PUT.puestofichajes'] =                                      array("puestofichajeController", "actualizar_puestofichaje");
+$routes['DELETE.puestofichajes'] =                                   array("puestofichajeController", "eliminar_puestofichaje");
+
 define("routes", $routes);
