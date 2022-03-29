@@ -33,4 +33,9 @@ $routes['POST.puestofichajes'] =                                     array("pues
 $routes['PUT.puestofichajes'] =                                      array("puestofichajeController", "actualizar_puestofichaje");
 $routes['DELETE.puestofichajes'] =                                   array("puestofichajeController", "eliminar_puestofichaje");
 
+$routes['GET.logs'] =                                                array("logController", "obtener_datos");
+$routes['POST.logs'] =                                               array("logController", "crear_log");
+$routes['PUT.logs'] =                                                array("logController", "actualizar_log");
+$routes['DELETE.logs'] =                                             array("logController", "eliminar_log");
+
 define("routes", $routes);
