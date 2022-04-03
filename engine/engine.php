@@ -20,7 +20,7 @@ class api {
      */
     function json() {
         // Error reporting a 0. Más adelante se pondra a 1 si es necesario.
-        //error_reporting(0);
+        error_reporting(0);
 
         // Cargamos la configuración necesaria
         require_once __DIR__.'/../config.php';
