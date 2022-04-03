@@ -65,13 +65,13 @@ class usuarioController extends controller {
             }else{
                 $salida = new salida();
                 $salida->set_id_error(400);
-                $salida->set_error("Login incorrecto");
+                $salida->set_error("Usuario o contraseña incorrecto");
                 return $salida;
             }
         }else{
             $salida = new salida();
             $salida->set_id_error(400);
-            $salida->set_error("Faltan parametros requeridos");
+            $salida->set_error("Falta el usuario o la contraseña");
             return $salida;
         }
     }
