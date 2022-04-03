@@ -40,7 +40,7 @@ class usuarioController extends controller {
             $user->set_usuario($username);
             $user->establish("usuario");
 
-            if($user->get_contrasenia() == md5($password)) {
+            if($user->get_contrasenia() == $password) {
                 // Creamos la sesión
                 $date = new \DateTime();
                 $date->modify('+2 hours');
