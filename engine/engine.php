@@ -52,13 +52,24 @@ class api {
         global $model;
         global $error_sql;
 
-        // Configuración inicial
-        header("Access-Control-Allow-Origin: *");
-        header('Access-Control-Allow-Credentials: true');
-        header('Access-Control-Allow-Methods: PUT, GET, DELETE');
-        header("Access-Control-Allow-Headers: X-Requested-With");
+        // Cabeceras
         header('Content-Type: application/json; charset='.CHARSET);
-        header('P3P: CP="IDC DSP COR CURa ADMa OUR IND PHY ONL COM STA"');
+        if (isset($_SERVER['HTTP_ORIGIN'])) {
+            header("Access-Control-Allow-Origin: *");
+            header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
+            header("Access-Control-Allow-Headers: Origin, Authorization, X-Requested-With, Content-Type, Accept");
+            header('Access-Control-Allow-Credentials: true');
+            header('Access-Control-Max-Age: 86400');
+        }
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+                header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+                header("Access-Control-Allow-Headers: Origin, Authorization, X-Requested-With, Content-Type, Accept");
+            exit(0);
+        }
+        
+        // Configuraciones de zona horaria
         putenv('TZ='.TIMEZONE);
         date_default_timezone_set(TIMEZONE);
         set_time_limit(300);
@@ -117,7 +128,8 @@ class api {
         // Cargamos el controlador y acción
         if(!empty($controller) && !empty($action)) {
             $parametros["GET"] = \PICAJES\helpers\arrays::clean_array($_GET);
-            $parametros["POST"] = \PICAJES\helpers\arrays::clean_array($_POST);
+            $parametros["POST"] = array_merge($_POST, json_decode(file_get_contents('php://input'), true));
+            $parametros["POST"] = \PICAJES\helpers\arrays::clean_array($parametros["POST"]);
             $parametros["URL"] = $cadena_url;
 
             // Validamos que este logueado
