@@ -37,7 +37,13 @@ class logController extends controller {
         if(empty($id)) {
             $todos_logs = \PICAJES\objects\log::todos_logs();
             foreach ($todos_logs as $log) {
-                $array[] = HOST_COMPLETO.VERSION_API."/logs/".$log->get_id()."/";
+                $array[] = array(
+                    "id" => $log->get_id(),
+                    "alt_date" => $log->get_altdate(),
+                    "usuario" => $log->get_usuario(),
+                    "puesto_fichaje" => $log->get_puestofichaje(),
+                    "tipo_movimiento" => $log->get_tipomovimiento()
+                );
             }
 
             $salida = new salida();

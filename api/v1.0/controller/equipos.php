@@ -37,7 +37,11 @@ class equipoController extends controller {
         if(empty($id)) {
             $todos_equipos = \PICAJES\objects\equipo::todos_equipos();
             foreach ($todos_equipos as $equipo) {
-                $array[] = HOST_COMPLETO.VERSION_API."/equipos/".$equipo->get_id()."/";
+                $array[] = array(
+                    "id" => $equipo->get_id(),
+                    "nombre" => $equipo->get_nombre(),
+                    "empresa" => $equipo->get_empresa()
+                );
             }
 
             $salida = new salida();

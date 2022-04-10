@@ -37,7 +37,10 @@ class zonaController extends controller {
         if(empty($id)) {
             $todos_zonas = \PICAJES\objects\zona::todos_zonas();
             foreach ($todos_zonas as $zona) {
-                $array[] = HOST_COMPLETO.VERSION_API."/zonas/".$zona->get_id()."/";
+                $array[] = array(
+                    "id" => $zona->get_id(),
+                    "nombre" => $zona->get_nombre()
+                );
             }
 
             $salida = new salida();

@@ -37,7 +37,14 @@ class empresaController extends controller {
         if(empty($id)) {
             $todos_empresas = \PICAJES\objects\empresa::todos_empresas();
             foreach ($todos_empresas as $empresa) {
-                $array[] = HOST_COMPLETO.VERSION_API."/empresas/".$empresa->get_id()."/";
+                $array[] = array(
+                    "id" => $empresa->get_id(),
+                    "nombre" => $empresa->get_nombre(),
+                    "nif" => $empresa->get_nif(),
+                    "direccion" => $empresa->get_direccion(),
+                    "telefono" => $empresa->get_telefono(),
+                    "email" => $empresa->get_email()
+                );
             }
 
             $salida = new salida();

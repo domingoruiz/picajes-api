@@ -89,7 +89,10 @@ class usuarioController extends controller {
         if(empty($id)) {
             $todos_usuarios = \PICAJES\objects\user::todos_users();
             foreach ($todos_usuarios as $user) {
-                $array[] = HOST_COMPLETO.VERSION_API."/usuarios/".$user->get_id()."/";
+                $array[] = array(
+                    "id" => $user->get_id(),
+                    "nombre" => $user->get_nombre()
+                );
             }
 
             $salida = new salida();

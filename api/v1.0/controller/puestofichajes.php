@@ -37,7 +37,11 @@ class puestofichajeController extends controller {
         if(empty($id)) {
             $todos_puestofichajes = \PICAJES\objects\puestofichaje::todos_puestofichajes();
             foreach ($todos_puestofichajes as $puestofichaje) {
-                $array[] = HOST_COMPLETO.VERSION_API."/puestofichajes/".$puestofichaje->get_id()."/";
+                $array[] = array(
+                    "id" => $puestofichaje->get_id(),
+                    "nombre" => $puestofichaje->get_nombre(),
+                    "zona" => $puestofichaje->get_zona()
+                );
             }
 
             $salida = new salida();
