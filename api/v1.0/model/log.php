@@ -111,8 +111,8 @@ class logModel {
      * @access public
      * @return object
      */
-    function get_todos() {
-        return $this->model->only_query(TABLE_logs);
+    function get_todos($empresa = null) {
+        return $this->model->only_query(TABLE_logs, array("empresa" => $empresa));
     }
 
     /**

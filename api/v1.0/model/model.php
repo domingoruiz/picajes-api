@@ -175,10 +175,12 @@ class model {
     public function only_query($table, $where=array(), $order=array()) {
         $wheres = "";
         foreach($where as $key=>$value) {
-            if(!$wheres) {
-                $wheres = " WHERE ";
+            if($value!=null) {
+                if(!$wheres) {
+                    $wheres = " WHERE ";
+                }
+                $wheres .= '('.$key.'=\''.$value.'\')AND';
             }
-            $wheres .= '('.$key.'=\''.$value.'\')AND';
         }
         $wheres = substr($wheres, 0, -3);
 

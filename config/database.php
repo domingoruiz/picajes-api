@@ -48,6 +48,7 @@ define('TABLE_puestofichajes',                   PREFIJO_BD.'puestofichaje');
       define('TABLE_puestofichajes_COLUMNA_id',             'id');
       define('TABLE_puestofichajes_COLUMNA_nombre',         'nombre');
       define('TABLE_puestofichajes_COLUMNA_zona',           'zona');
+      define('TABLE_puestofichajes_COLUMNA_empresa',        'empresa');
 
 define('TABLE_logs',                              PREFIJO_BD.'log');
       define('TABLE_logs_COLUMNA_id',                        'id');
@@ -55,3 +56,4 @@ define('TABLE_logs',                              PREFIJO_BD.'log');
       define('TABLE_logs_COLUMNA_usuario',                   'usuario');
       define('TABLE_logs_COLUMNA_puestofichaje',             'puestofichaje');
       define('TABLE_logs_COLUMNA_tipomovimiento',            'tipo_movimiento');
+      define('TABLE_logs_COLUMNA_empresa',                   'empresa');

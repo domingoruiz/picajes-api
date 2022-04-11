@@ -356,7 +356,7 @@ class empresa {
         $model = new \PICAJES\models\empresaModel();
 
         $return = array();
-        $empresas_todos = $model->get_todos();
+        $empresas_todos = $model->get_todos($GLOBALS['empresa_id']);
 
         while ($empresa = $empresas_todos->fetch_array()) {
             $return[] = new \PICAJES\objects\empresa($empresa[TABLE_empresas_COLUMNA_id]);

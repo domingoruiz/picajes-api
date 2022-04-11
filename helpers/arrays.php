@@ -47,7 +47,7 @@ class arrays {
     * @return array 
     * @param array $array
     */
-    static function clean_array(array $array=array()) {
+    static function clean_array($array=array()) {
         $new_array = array();
         
         foreach($array as $key=>$value) {

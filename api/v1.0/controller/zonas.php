@@ -33,9 +33,9 @@ class zonaController extends controller {
      */
     function obtener_datos($parametros) {
         $id = $parametros["URL"]["3"];
-
+        
         if(empty($id)) {
-            $todos_zonas = \PICAJES\objects\zona::todos_zonas();
+            $todos_zonas = \PICAJES\objects\zona::todos_zonas($GLOBALS["empresa_id"]);
             foreach ($todos_zonas as $zona) {
                 $array[] = array(
                     "id" => $zona->get_id(),

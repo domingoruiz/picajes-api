@@ -49,6 +49,13 @@ class log {
     public $alt_date;
 
     /**
+     * Empresa de la sesión
+     * @var int
+     * @access public
+     */
+    public $empresa;
+
+    /**
      * Iniciamos el objeto log con la posibilidad de aportar un codigó para que se establezcan todas las variables
      * 
      * @access public
@@ -193,6 +200,31 @@ class log {
     }
 
     /**
+     * Establecemos el id de la empresa
+     * 
+     * @access public
+     * @param int $empresa
+     * @return boolean
+    */
+    public function set_empresa($empresa) {
+        if($this->empresa = (int) $empresa) {
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+    
+    /**
+     * Obtenemos el id de la empresa
+     * 
+     * @access public
+     * @return int
+    */
+    public function get_empresa() {
+        return $this->empresa;
+    }
+
+    /**
      * Con esta función configuramos todas las variables del objeto
      * 
      * @access public
@@ -213,6 +245,7 @@ class log {
               $this->set_usuario($data[TABLE_logs_COLUMNA_usuario]);
               $this->set_tipomovimiento($data[TABLE_logs_COLUMNA_tipomovimiento]);
               $this->set_altdate($data[TABLE_logs_COLUMNA_altdate]);
+              $this->set_empresa($data[TABLE_logs_COLUMNA_empresa]);
               
               $this->establish = 1;
               return TRUE;
@@ -234,12 +267,14 @@ class log {
     public function create() {
         if(!empty($this->get_usuario()) &&
            !empty($this->get_puestofichaje()) &&
-           !empty($this->get_tipomovimiento())) {
+           !empty($this->get_tipomovimiento()) &&
+           !empty($this->get_empresa())) {
             //Guardamos el log en la BD
             $ok[] = $this->model->guardar(
                         $this->get_usuario(), 
                         $this->get_puestofichaje(), 
-                        $this->get_tipomovimiento()
+                        $this->get_tipomovimiento(), 
+                        $this->get_empresa()
                       );
 
             if(\PICAJES\helpers\arrays::array_equal($ok)) {
@@ -320,7 +355,7 @@ class log {
         $model = new \PICAJES\models\logModel();
 
         $return = array();
-        $logs_todos = $model->get_todos();
+        $logs_todos = $model->get_todos($GLOBALS['empresa_id']);
 
         while ($log = $logs_todos->fetch_array()) {
             $return[] = new \PICAJES\objects\log($log[TABLE_logs_COLUMNA_id]);

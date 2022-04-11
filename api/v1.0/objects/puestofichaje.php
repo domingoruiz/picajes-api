@@ -35,6 +35,13 @@ class puestofichaje {
     public $zona;
 
     /**
+     * Empresa de la sesión
+     * @var int
+     * @access public
+     */
+    public $empresa;
+
+    /**
      * Iniciamos el objeto puestofichaje con la posibilidad de aportar un codigó para que se establezcan todas las variables
      * 
      * @access public
@@ -129,6 +136,31 @@ class puestofichaje {
     }
 
     /**
+     * Establecemos el id de la empresa
+     * 
+     * @access public
+     * @param int $empresa
+     * @return boolean
+    */
+    public function set_empresa($empresa) {
+        if($this->empresa = (int) $empresa) {
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+    
+    /**
+     * Obtenemos el id de la empresa
+     * 
+     * @access public
+     * @return int
+    */
+    public function get_empresa() {
+        return $this->empresa;
+    }
+
+    /**
      * Con esta función configuramos todas las variables del objeto
      * 
      * @access public
@@ -147,6 +179,7 @@ class puestofichaje {
               $this->set_id($data[TABLE_puestofichajes_COLUMNA_id]);
               $this->set_nombre($data[TABLE_puestofichajes_COLUMNA_nombre]);
               $this->set_zona($data[TABLE_puestofichajes_COLUMNA_zona]);
+              $this->set_empresa($data[TABLE_puestofichajes_COLUMNA_empresa]);
               
               $this->establish = 1;
               return TRUE;
@@ -167,11 +200,13 @@ class puestofichaje {
     */
     public function create() {
         if(!empty($this->get_nombre()) &&
-           !empty($this->get_zona())) {
+           !empty($this->get_zona()) &&
+           !empty($this->get_empresa())) {
             //Guardamos el puestofichaje en la BD
             $ok[] = $this->model->guardar(
                         $this->get_nombre(), 
-                        $this->get_zona()
+                        $this->get_zona(), 
+                        $this->get_empresa()
                       );
 
             if(\PICAJES\helpers\arrays::array_equal($ok)) {
@@ -252,7 +287,7 @@ class puestofichaje {
         $model = new \PICAJES\models\puestofichajeModel();
 
         $return = array();
-        $puestofichajes_todos = $model->get_todos();
+        $puestofichajes_todos = $model->get_todos($GLOBALS['empresa_id']);
 
         while ($puestofichaje = $puestofichajes_todos->fetch_array()) {
             $return[] = new \PICAJES\objects\puestofichaje($puestofichaje[TABLE_puestofichajes_COLUMNA_id]);

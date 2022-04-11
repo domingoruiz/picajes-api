@@ -252,7 +252,7 @@ class equipo {
         $model = new \PICAJES\models\equipoModel();
 
         $return = array();
-        $equipos_todos = $model->get_todos();
+        $equipos_todos = $model->get_todos($GLOBALS['empresa_id']);
 
         while ($equipo = $equipos_todos->fetch_array()) {
             $return[] = new \PICAJES\objects\equipo($equipo[TABLE_equipos_COLUMNA_id]);

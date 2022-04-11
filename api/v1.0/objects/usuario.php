@@ -423,7 +423,7 @@ class user {
         $model = new \PICAJES\models\userModel();
 
         $return = array();
-        $users_todos = $model->get_todos();
+        $users_todos = $model->get_todos($GLOBALS['empresa_id']);
 
         while ($user = $users_todos->fetch_array()) {
             $return[] = new \PICAJES\objects\user($user[TABLE_usuario_COLUMNA_id]);

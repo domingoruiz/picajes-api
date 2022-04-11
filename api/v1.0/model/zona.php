@@ -107,8 +107,8 @@ class zonaModel {
      * @access public
      * @return object
      */
-    function get_todos() {
-        return $this->model->only_query(TABLE_zonas);
+    function get_todos($empresa = null) {
+        return $this->model->only_query(TABLE_zonas, array("empresa" => $empresa));
     }
 
     /**

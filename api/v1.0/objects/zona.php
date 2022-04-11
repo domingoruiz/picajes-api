@@ -252,7 +252,7 @@ class zona {
         $model = new \PICAJES\models\zonaModel();
 
         $return = array();
-        $zonas_todos = $model->get_todos();
+        $zonas_todos = $model->get_todos($GLOBALS['empresa_id']);
 
         while ($zona = $zonas_todos->fetch_array()) {
             $return[] = new \PICAJES\objects\zona($zona[TABLE_zonas_COLUMNA_id]);

@@ -127,8 +127,8 @@ class userModel {
      * @access public
      * @return object
      */
-    function get_todos() {
-        return $this->model->only_query(TABLE_usuario);
+    function get_todos($empresa = null) {
+        return $this->model->only_query(TABLE_usuario, array("empresa" => $empresa));
     }
 
     /**

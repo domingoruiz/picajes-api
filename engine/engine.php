@@ -51,6 +51,8 @@ class api {
         // Iniciamos las globales
         global $model;
         global $error_sql;
+        global $usuario_id;
+        global $empresa_id;
 
         // Cabeceras
         header('Content-Type: application/json; charset='.CHARSET);
@@ -141,6 +143,8 @@ class api {
                 $sesion->establish("token_sesion");
 
                 if(!empty($sesion->get_id())) {
+                    $empresa_id = $sesion->get_empresa();
+                    $usuario_id = $sesion->get_user();
                     $controller = new $controller();
                     $json = $controller->$action($parametros)->generar_salida();
                 }else{

@@ -107,8 +107,8 @@ class equipoModel {
      * @access public
      * @return object
      */
-    function get_todos() {
-        return $this->model->only_query(TABLE_equipos);
+    function get_todos($empresa = null) {
+        return $this->model->only_query(TABLE_equipos, array("empresa" => $empresa));
     }
 
     /**

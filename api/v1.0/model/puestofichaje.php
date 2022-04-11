@@ -107,8 +107,8 @@ class puestofichajeModel {
      * @access public
      * @return object
      */
-    function get_todos() {
-        return $this->model->only_query(TABLE_puestofichajes);
+    function get_todos($empresa = null) {
+        return $this->model->only_query(TABLE_puestofichajes, array("empresa" => $empresa));
     }
 
     /**

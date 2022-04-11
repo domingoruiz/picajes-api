@@ -28,6 +28,13 @@ class sesion {
     public $user;
 
     /**
+     * Empresa de la sesión
+     * @var int
+     * @access public
+     */
+    public $empresa;
+
+    /**
      * Token de la sesión
      * @var string
      * @access public
@@ -111,6 +118,31 @@ class sesion {
     public function get_user() {
         return $this->user;
     }
+
+    /**
+     * Establecemos el id de la empresa
+     * 
+     * @access public
+     * @param int $empresa
+     * @return boolean
+    */
+    public function set_empresa($empresa) {
+        if($this->empresa = (int) $empresa) {
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+    
+    /**
+     * Obtenemos el id de la empresa
+     * 
+     * @access public
+     * @return int
+    */
+    public function get_empresa() {
+        return $this->empresa;
+    }
     
     /**
      * Establecemos el token de la sesión
@@ -180,11 +212,14 @@ class sesion {
             $data = $this->model->get($where);
 
             if($data) {
+              $usuario = new user($data[TABLE_sesion_COLUMNA_usuario]);
+
               $this->set_id($data[TABLE_sesion_COLUMNA_id]);
               $this->set_user($data[TABLE_sesion_COLUMNA_usuario]);
               $this->set_token_sesion($data[TABLE_sesion_COLUMNA_tokensesion]);
               $this->set_fecha_expiracion($data[TABLE_sesion_COLUMNA_fechaexpiracion]);
-              
+              $this->set_empresa($usuario->get_empresa());
+
               $this->establish = 1;
               return TRUE;
             }else{
