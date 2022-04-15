@@ -32,13 +32,13 @@ class puestofichajeController extends controller {
      * @return salida
      */
     function obtener_datos($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
 
         if(empty($id)) {
             $todos_puestofichajes = \PICAJES\objects\puestofichaje::todos_puestofichajes();
             foreach ($todos_puestofichajes as $puestofichaje) {
                 $array[] = array(
-                    "id" => $puestofichaje->get_id(),
+                    "id" => \PICAJES\helpers\cifrar::cifrar($puestofichaje->get_id()),
                     "nombre" => $puestofichaje->get_nombre(),
                     "zona" => $puestofichaje->get_zona()
                 );
@@ -55,7 +55,7 @@ class puestofichajeController extends controller {
 
             if(!empty($puestofichaje->get_nombre())) {
                 $array = array(
-                    "id" => $puestofichaje->get_id(),
+                    "id" => \PICAJES\helpers\cifrar::cifrar($puestofichaje->get_id()),
                     "nombre" => $puestofichaje->get_nombre(),
                     "zona" => $puestofichaje->get_zona()
                 );
@@ -93,7 +93,7 @@ class puestofichajeController extends controller {
                 if($puestofichaje->create()) {
                     $salida = new salida();
                     $salida->set_id_error(201);
-                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/puestofichajes/".$puestofichaje->get_id()."/");
+                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/puestofichajes/".\PICAJES\helpers\cifrar::cifrar($puestofichaje->get_id())."/");
                     return $salida;
                 }else{
                     $salida = new salida();
@@ -118,7 +118,7 @@ class puestofichajeController extends controller {
      * @return salida
      */
     function actualizar_puestofichaje($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
         $nombre = $parametros["GET"]["nombre"];
         $zona = $parametros["GET"]["zona"];
 
@@ -168,7 +168,7 @@ class puestofichajeController extends controller {
      * @return salida
      */
     function eliminar_puestofichaje($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
 
         if(!empty($id)) {
             $puestofichaje = new \PICAJES\objects\puestofichaje($id);

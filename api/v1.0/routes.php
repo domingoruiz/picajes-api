@@ -7,7 +7,7 @@
 
 $routes['GET.'] =                                                    array("inicioController", "inicio");
 
-$routes['GET.usuarios.login'] =                                      array("usuarioController", "login");
+$routes['GET.login'] =                                               array("usuarioController", "login");
 $routes['GET.usuarios'] =                                            array("usuarioController", "obtener_datos");
 $routes['POST.usuarios'] =                                           array("usuarioController", "crear_usuario");
 $routes['PUT.usuarios'] =                                            array("usuarioController", "actualizar_usuario");

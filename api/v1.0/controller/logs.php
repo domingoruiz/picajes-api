@@ -32,13 +32,13 @@ class logController extends controller {
      * @return salida
      */
     function obtener_datos($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
 
         if(empty($id)) {
             $todos_logs = \PICAJES\objects\log::todos_logs();
             foreach ($todos_logs as $log) {
                 $array[] = array(
-                    "id" => $log->get_id(),
+                    "id" => \PICAJES\helpers\cifrar::cifrar($log->get_id()),
                     "alt_date" => $log->get_altdate(),
                     "usuario" => $log->get_usuario(),
                     "puesto_fichaje" => $log->get_puestofichaje(),
@@ -57,7 +57,7 @@ class logController extends controller {
 
             if(!empty($log->get_altdate())) {
                 $array = array(
-                    "id" => $log->get_id(),
+                    "id" => \PICAJES\helpers\cifrar::cifrar($log->get_id()),
                     "alt_date" => $log->get_altdate(),
                     "usuario" => $log->get_usuario(),
                     "puesto_fichaje" => $log->get_puestofichaje(),
@@ -99,7 +99,7 @@ class logController extends controller {
                 if($log->create()) {
                     $salida = new salida();
                     $salida->set_id_error(201);
-                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/logs/".$log->get_id()."/");
+                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/logs/".\PICAJES\helpers\cifrar::cifrar($log->get_id())."/");
                     return $salida;
                 }else{
                     $salida = new salida();
@@ -124,7 +124,7 @@ class logController extends controller {
      * @return salida
      */
     function actualizar_log($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
         $usuario = $parametros["GET"]["usuario"];
         $puesto_fichaje = $parametros["GET"]["puesto_fichaje"];
         $tipo_movimiento = $parametros["GET"]["tipo_movimiento"];
@@ -176,7 +176,7 @@ class logController extends controller {
      * @return salida
      */
     function eliminar_log($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
 
         if(!empty($id)) {
             $log = new \PICAJES\objects\log($id);

@@ -32,13 +32,13 @@ class empresaController extends controller {
      * @return salida
      */
     function obtener_datos($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
 
         if(empty($id)) {
             $todos_empresas = \PICAJES\objects\empresa::todos_empresas();
             foreach ($todos_empresas as $empresa) {
                 $array[] = array(
-                    "id" => $empresa->get_id(),
+                    "id" => \PICAJES\helpers\cifrar::cifrar($empresa->get_id()),
                     "nombre" => $empresa->get_nombre(),
                     "nif" => $empresa->get_nif(),
                     "direccion" => $empresa->get_direccion(),
@@ -58,7 +58,7 @@ class empresaController extends controller {
 
             if(!empty($empresa->get_nombre())) {
                 $array = array(
-                    "id" => $empresa->get_id(),
+                    "id" => \PICAJES\helpers\cifrar::cifrar($empresa->get_id()),
                     "nombre" => $empresa->get_nombre(),
                     "nif" => $empresa->get_nif(),
                     "direccion" => $empresa->get_direccion(),
@@ -111,7 +111,7 @@ class empresaController extends controller {
 
                     $salida = new salida();
                     $salida->set_id_error(201);
-                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/empresas/".$empresa->get_id()."/");
+                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/empresas/".\PICAJES\helpers\cifrar::cifrar($empresa->get_id())."/");
                     return $salida;
                 }else{
                     $salida = new salida();
@@ -141,7 +141,7 @@ class empresaController extends controller {
      * @return salida
      */
     function actualizar_empresa($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
         $nombre = $parametros["GET"]["nombre"];
         $nif = $parametros["GET"]["nif"];
         $direccion = $parametros["GET"]["direccion"];
@@ -197,7 +197,7 @@ class empresaController extends controller {
      * @return salida
      */
     function eliminar_empresa($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
 
         if(!empty($id)) {
             $empresa = new \PICAJES\objects\empresa($id);

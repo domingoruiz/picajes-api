@@ -29,7 +29,7 @@ class api {
         $cadena_url = "/".explode(HOST_COMPLETO, HOST.substr($_SERVER["REQUEST_URI"], 1))[1];
         $cadena_url = parse_url(substr(HOST, 0,-1).$cadena_url, PHP_URL_PATH);
         $cadena_url = array_filter(explode("/", $cadena_url));
-
+        
         // Definimos el metodo de la petición
         $metodo_peticion = $_SERVER['REQUEST_METHOD'];
 
@@ -117,11 +117,7 @@ class api {
 
         // Averiguamos que controlador y accion nos esta pidiendo el cliente
         $cadena_url_sin_id = \PICAJES\helpers\arrays::eliminar_numeros($cadena_url);
-
-        for ($i=0;$i<=(count($cadena_url_sin_id));$i++) {
-            $peticion = $peticion.$cadena_url_sin_id[$i].".";
-        }
-        $peticion = substr($peticion, 0, -2);
+        $peticion = $cadena_url_sin_id[0];
 
         require_once ROUTEAPI.'routes.php';
         $controller = "\PICAJES\controllers\\".$routes[$metodo_peticion.'.'.$peticion][0];
@@ -133,9 +129,9 @@ class api {
             $parametros["POST"] = array_merge($_POST, json_decode(file_get_contents('php://input'), true));
             $parametros["POST"] = \PICAJES\helpers\arrays::clean_array($parametros["POST"]);
             $parametros["URL"] = $cadena_url;
-
+            
             // Validamos que este logueado
-            if(!($metodo_peticion == "GET" && $peticion == "cron") && !($metodo_peticion == "GET" && $peticion == "") && !($metodo_peticion == "GET" && $peticion == "usuarios.login")) {
+            if(!($metodo_peticion == "GET" && $peticion == "cron") && !($metodo_peticion == "GET" && $peticion == "") && !($metodo_peticion == "GET" && $peticion == "login")) {
                 $sesion = new \PICAJES\objects\sesion;
                 if($parametros["GET"]["token_sesion"]) $token_sesion = $parametros["GET"]["token_sesion"];
                 if($parametros["POST"]["token_sesion"]) $token_sesion = $parametros["POST"]["token_sesion"];

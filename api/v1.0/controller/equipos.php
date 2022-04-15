@@ -32,13 +32,13 @@ class equipoController extends controller {
      * @return salida
      */
     function obtener_datos($parametros) {
-        $id = $parametros["URL"]["3"];
-
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
+        
         if(empty($id)) {
             $todos_equipos = \PICAJES\objects\equipo::todos_equipos();
             foreach ($todos_equipos as $equipo) {
                 $array[] = array(
-                    "id" => $equipo->get_id(),
+                    "id" => \PICAJES\helpers\cifrar::cifrar($equipo->get_id()),
                     "nombre" => $equipo->get_nombre(),
                     "empresa" => $equipo->get_empresa()
                 );
@@ -55,7 +55,7 @@ class equipoController extends controller {
 
             if(!empty($equipo->get_nombre())) {
                 $array = array(
-                    "id" => $equipo->get_id(),
+                    "id" => \PICAJES\helpers\cifrar::cifrar($equipo->get_id()),
                     "nombre" => $equipo->get_nombre(),
                     "empresa" => $equipo->get_empresa()
                 );
@@ -93,7 +93,7 @@ class equipoController extends controller {
                 if($equipo->create()) {
                     $salida = new salida();
                     $salida->set_id_error(201);
-                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/equipos/".$equipo->get_id()."/");
+                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/equipos/".\PICAJES\helpers\cifrar::cifrar($equipo->get_id())."/");
                     return $salida;
                 }else{
                     $salida = new salida();
@@ -118,7 +118,7 @@ class equipoController extends controller {
      * @return salida
      */
     function actualizar_equipo($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
         $nombre = $parametros["GET"]["nombre"];
         $empresa = $parametros["GET"]["empresa"];
 
@@ -168,7 +168,7 @@ class equipoController extends controller {
      * @return salida
      */
     function eliminar_equipo($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
 
         if(!empty($id)) {
             $equipo = new \PICAJES\objects\equipo($id);

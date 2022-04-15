@@ -84,13 +84,13 @@ class usuarioController extends controller {
      * @return salida
      */
     function obtener_datos($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
 
         if(empty($id)) {
             $todos_usuarios = \PICAJES\objects\user::todos_users();
             foreach ($todos_usuarios as $user) {
                 $array[] = array(
-                    "id" => $user->get_id(),
+                    "id" => \PICAJES\helpers\cifrar::cifrar($user->get_id()),
                     "nombre" => $user->get_nombre()
                 );
             }
@@ -104,7 +104,7 @@ class usuarioController extends controller {
 
             if(!empty($user->get_contrasenia())) {
                 $array = array(
-                    "id" => $user->get_id(),
+                    "id" => \PICAJES\helpers\cifrar::cifrar($user->get_id()),
                     "usuario" => $user->get_usuario(),
                     "password" => $user->get_contrasenia(),
                     "email" => $user->get_email(),
@@ -163,7 +163,7 @@ class usuarioController extends controller {
 
                     $salida = new salida();
                     $salida->set_id_error(201);
-                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/usuarios/".$user->get_id()."/");
+                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/usuarios/".\PICAJES\helpers\cifrar::cifrar($user->get_id())."/");
                     return $salida;
                 }else{
                     $salida = new salida();
@@ -193,7 +193,7 @@ class usuarioController extends controller {
      * @return salida
      */
     function actualizar_usuario($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
         $nombre = $parametros["GET"]["nombre"];
         $email = $parametros["GET"]["email"];
         $usuario = $parametros["GET"]["usuario"];
@@ -252,7 +252,7 @@ class usuarioController extends controller {
      * @return salida
      */
     function eliminar_usuario($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
 
         if(!empty($id)) {
             $user = new \PICAJES\objects\user($id);

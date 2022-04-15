@@ -32,13 +32,13 @@ class zonaController extends controller {
      * @return salida
      */
     function obtener_datos($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
         
         if(empty($id)) {
             $todos_zonas = \PICAJES\objects\zona::todos_zonas($GLOBALS["empresa_id"]);
             foreach ($todos_zonas as $zona) {
                 $array[] = array(
-                    "id" => $zona->get_id(),
+                    "id" => \PICAJES\helpers\cifrar::cifrar($zona->get_id()),
                     "nombre" => $zona->get_nombre()
                 );
             }
@@ -54,7 +54,7 @@ class zonaController extends controller {
 
             if(!empty($zona->get_nombre())) {
                 $array = array(
-                    "id" => $zona->get_id(),
+                    "id" => \PICAJES\helpers\cifrar::cifrar($zona->get_id()),
                     "nombre" => $zona->get_nombre(),
                     "empresa" => $zona->get_empresa()
                 );
@@ -92,7 +92,7 @@ class zonaController extends controller {
                 if($zona->create()) {
                     $salida = new salida();
                     $salida->set_id_error(201);
-                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/zonas/".$zona->get_id()."/");
+                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/zonas/".\PICAJES\helpers\cifrar::cifrar($zona->get_id())."/");
                     return $salida;
                 }else{
                     $salida = new salida();
@@ -117,9 +117,9 @@ class zonaController extends controller {
      * @return salida
      */
     function actualizar_zona($parametros) {
-        $id = $parametros["URL"]["3"];
-        $nombre = $parametros["GET"]["nombre"];
-        $empresa = $parametros["GET"]["empresa"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
+        $nombre = $parametros["POST"]["nombre"];
+        $empresa = $parametros["POST"]["empresa"];
 
         if(!empty($nombre) && !empty($empresa)) {
             if(!empty($id)) {
@@ -131,6 +131,7 @@ class zonaController extends controller {
                     if($zona->update()) {
                         $salida = new salida();
                         $salida->set_id_error(200);
+                        $salida->set_error("Modificado correctamente");
                         return $salida;
                     }else{
                         $salida = new salida();
@@ -167,7 +168,7 @@ class zonaController extends controller {
      * @return salida
      */
     function eliminar_zona($parametros) {
-        $id = $parametros["URL"]["3"];
+        $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
 
         if(!empty($id)) {
             $zona = new \PICAJES\objects\zona($id);
