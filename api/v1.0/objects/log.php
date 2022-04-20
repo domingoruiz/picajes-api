@@ -182,7 +182,7 @@ class log {
      * @return boolean
     */
     public function set_altdate($altdate) {
-        if($this->alt_date = (int) $altdate) {
+        if($this->alt_date = $altdate) {
             return TRUE;
         }else{
             return FALSE;

@@ -119,14 +119,13 @@ class zonaController extends controller {
     function actualizar_zona($parametros) {
         $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
         $nombre = $parametros["POST"]["nombre"];
-        $empresa = $parametros["POST"]["empresa"];
 
-        if(!empty($nombre) && !empty($empresa)) {
+        if(!empty($nombre)) {
             if(!empty($id)) {
                 $zona = new \PICAJES\objects\zona($id);
                 if(!empty($zona->get_id())) {
                     $zona->set_nombre($nombre);
-                    $zona->set_empresa($empresa);
+                    $zona->set_empresa($GLOBALS["empresa_id"]);
 
                     if($zona->update()) {
                         $salida = new salida();

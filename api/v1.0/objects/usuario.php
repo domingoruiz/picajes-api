@@ -70,6 +70,13 @@ class user {
     public $equipo;
 
     /**
+     * Barcode del usuario
+     * @var string
+     * @access public
+     */
+    public $barcode;
+
+    /**
      * Iniciamos el objeto user con la posibilidad de aportar un codigó para que se establezcan todas las variables
      * 
      * @access public
@@ -289,6 +296,31 @@ class user {
     }
 
     /**
+     * Establecemos el barcode
+     * 
+     * @access public
+     * @param string $barcode 
+     * @return boolean
+    */
+    public function set_barcode($barcode) {
+        if($this->barcode = (int) $barcode) {
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+    
+    /**
+     * Obtenemos el barcode
+     * 
+     * @access public
+     * @return string
+    */
+    public function get_barcode() {
+        return $this->barcode;
+    }
+
+    /**
      * Con esta función configuramos todas las variables del objeto
      * 
      * @access public
@@ -300,7 +332,9 @@ class user {
            $where=array("id" => $this->get_id());
         }elseif($forma=="usuario" && !empty($this->get_usuario())) {
            $where=array("usuario" => $this->get_usuario());
-        }
+        }elseif($forma=="barcode" && !empty($this->get_barcode())) {
+            $where=array("barcode" => $this->get_barcode());
+         }
         
         if(!empty($where)) {
             $data = $this->model->get($where);
@@ -314,6 +348,7 @@ class user {
               $this->set_telefono($data[TABLE_usuario_COLUMNA_telefono]);
               $this->set_empresa($data[TABLE_usuario_COLUMNA_empresa]);
               $this->set_equipo($data[TABLE_usuario_COLUMNA_equipo]);
+              $this->set_barcode($data[TABLE_usuario_COLUMNA_barcode]);
               
               $this->establish = 1;
               return TRUE;
@@ -345,7 +380,8 @@ class user {
                         $this->get_email(),
                         $this->get_telefono(),
                         $this->get_empresa(),
-                        $this->get_equipo()
+                        $this->get_equipo(),
+                        $this->get_barcode()
                       );
 
             if(\PICAJES\helpers\arrays::array_equal($ok)) {
@@ -382,7 +418,7 @@ class user {
     */
     public function update() {
         if(!empty($this->get_id())) {
-           return $this->model->update($this->get_id(), $this->get_usuario(), $this->get_contrasenia(), $this->get_nombre(), $this->get_email(), $this->get_telefono(), $this->get_empresa(), $this->get_equipo());
+           return $this->model->update($this->get_id(), $this->get_usuario(), $this->get_contrasenia(), $this->get_nombre(), $this->get_email(), $this->get_telefono(), $this->get_empresa(), $this->get_equipo(), $this->get_barcode());
         }else{
             return FALSE;
         }

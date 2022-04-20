@@ -47,12 +47,13 @@ class puestofichajeModel {
      * @param int $zona ID de la zona
      * @return boolean
     */
-    function guardar(string $nombre, int $zona) {
+    function guardar(string $nombre, int $zona, int $empresa) {
         return $this->model->insert(
                 TABLE_puestofichajes, 
                 array(
                     TABLE_puestofichajes_COLUMNA_nombre => $nombre, 
-                    TABLE_puestofichajes_COLUMNA_zona => $zona
+                    TABLE_puestofichajes_COLUMNA_zona => $zona, 
+                    TABLE_puestofichajes_COLUMNA_empresa => $empresa
                     )
                 );
     }

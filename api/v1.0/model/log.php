@@ -46,15 +46,17 @@ class logModel {
      * @param int $usuario Usuario
      * @param int $puesto_fichaje Puesto de fichaje
      * @param int $tipo_movimiento Tipo de movimiento
+     * @param int $empresa Empresa
      * @return boolean
     */
-    function guardar(int $usuario, int $puesto_fichaje, int $tipo_movimiento) {
+    function guardar(int $usuario, int $puesto_fichaje, int $tipo_movimiento, int $empresa) {
         return $this->model->insert(
                 TABLE_logs, 
                 array(
                     TABLE_logs_COLUMNA_usuario => $usuario, 
                     TABLE_logs_COLUMNA_puestofichaje => $puesto_fichaje,
-                    TABLE_logs_COLUMNA_tipomovimiento => $tipo_movimiento
+                    TABLE_logs_COLUMNA_tipomovimiento => $tipo_movimiento,
+                    TABLE_logs_COLUMNA_empresa => $empresa
                     )
                 );
     }

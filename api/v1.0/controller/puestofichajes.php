@@ -37,10 +37,11 @@ class puestofichajeController extends controller {
         if(empty($id)) {
             $todos_puestofichajes = \PICAJES\objects\puestofichaje::todos_puestofichajes();
             foreach ($todos_puestofichajes as $puestofichaje) {
+                $zona = new \PICAJES\objects\zona($puestofichaje->get_zona());
                 $array[] = array(
                     "id" => \PICAJES\helpers\cifrar::cifrar($puestofichaje->get_id()),
                     "nombre" => $puestofichaje->get_nombre(),
-                    "zona" => $puestofichaje->get_zona()
+                    "zona" => $zona->get_nombre()
                 );
             }
 
@@ -57,7 +58,7 @@ class puestofichajeController extends controller {
                 $array = array(
                     "id" => \PICAJES\helpers\cifrar::cifrar($puestofichaje->get_id()),
                     "nombre" => $puestofichaje->get_nombre(),
-                    "zona" => $puestofichaje->get_zona()
+                    "zona" => \PICAJES\helpers\cifrar::cifrar($puestofichaje->get_zona())
                 );
 
                 $salida = new salida();
@@ -82,13 +83,14 @@ class puestofichajeController extends controller {
      */
     function crear_puestofichaje($parametros) {
         $nombre = $parametros["POST"]["nombre"];
-        $zona = $parametros["POST"]["zona"];
+        $zona = \PICAJES\helpers\cifrar::descifrar($parametros["POST"]["zona"]);
 
         if(!empty($nombre) && !empty($zona)) {
             if(1) {
                 $puestofichaje = new \PICAJES\objects\puestofichaje();
                 $puestofichaje->set_nombre($nombre);
                 $puestofichaje->set_zona($zona);
+                $puestofichaje->set_empresa($GLOBALS["empresa_id"]);
 
                 if($puestofichaje->create()) {
                     $salida = new salida();
@@ -119,8 +121,8 @@ class puestofichajeController extends controller {
      */
     function actualizar_puestofichaje($parametros) {
         $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
-        $nombre = $parametros["GET"]["nombre"];
-        $zona = $parametros["GET"]["zona"];
+        $nombre = $parametros["POST"]["nombre"];
+        $zona = \PICAJES\helpers\cifrar::descifrar($parametros["POST"]["zona"]);
 
         if(!empty($nombre) && !empty($zona)) {
             if(!empty($id)) {
@@ -132,6 +134,7 @@ class puestofichajeController extends controller {
                     if($puestofichaje->update()) {
                         $salida = new salida();
                         $salida->set_id_error(200);
+                        $salida->set_error("Modificado correctamente");
                         return $salida;
                     }else{
                         $salida = new salida();

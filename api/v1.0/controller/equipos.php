@@ -119,8 +119,8 @@ class equipoController extends controller {
      */
     function actualizar_equipo($parametros) {
         $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
-        $nombre = $parametros["GET"]["nombre"];
-        $empresa = $parametros["GET"]["empresa"];
+        $nombre = $parametros["POST"]["nombre"];
+        $empresa = $parametros["POST"]["empresa"];
 
         if(!empty($nombre) && !empty($empresa)) {
             if(!empty($id)) {
@@ -132,6 +132,7 @@ class equipoController extends controller {
                     if($equipo->update()) {
                         $salida = new salida();
                         $salida->set_id_error(200);
+                        $salida->set_error("Equipo modificado correctamente");
                         return $salida;
                     }else{
                         $salida = new salida();

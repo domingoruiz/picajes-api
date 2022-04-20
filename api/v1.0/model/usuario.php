@@ -50,9 +50,10 @@ class userModel {
      * @param string $telefono
      * @param int $empresa
      * @param int $equipo
+     * @param int $barcode
      * @return boolean
     */
-    function guardar(string $username, string $password, string $nombre, string $email, string $telefono, int $empresa, int $equipo) {
+    function guardar(string $username, string $password, string $nombre, string $email, string $telefono, int $empresa, int $equipo, int $barcode) {
         return $this->model->insert(
                 TABLE_usuario, 
                 array(
@@ -62,7 +63,8 @@ class userModel {
                     TABLE_usuario_COLUMNA_email => $email,
                     TABLE_usuario_COLUMNA_telefono => $telefono,
                     TABLE_usuario_COLUMNA_empresa => $empresa,
-                    TABLE_usuario_COLUMNA_equipo => $equipo
+                    TABLE_usuario_COLUMNA_equipo => $equipo,
+                    TABLE_usuario_COLUMNA_barcode => $barcode
                     )
                 );
     }
@@ -79,9 +81,10 @@ class userModel {
      * @param string $telefono
      * @param int $empresa
      * @param int $equipo
+     * @param int $barcode
      * @return boolean
      */
-    function update(int $user_id, string $username, string $password, string $nombre, string $email, string $telefono, int $empresa, int $equipo) {
+    function update(int $user_id, string $username, string $password, string $nombre, string $email, string $telefono, int $empresa, int $equipo, int $barcode) {
         return $this->model->update(
                 TABLE_usuario, 
                 array(
@@ -91,7 +94,8 @@ class userModel {
                     TABLE_usuario_COLUMNA_email => $email,
                     TABLE_usuario_COLUMNA_telefono => $telefono,
                     TABLE_usuario_COLUMNA_empresa => $empresa,
-                    TABLE_usuario_COLUMNA_equipo => $equipo
+                    TABLE_usuario_COLUMNA_equipo => $equipo,
+                    TABLE_usuario_COLUMNA_barcode => $barcode
                      ),
                 array(
                     TABLE_usuario_COLUMNA_id => $user_id

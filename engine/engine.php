@@ -131,7 +131,7 @@ class api {
             $parametros["URL"] = $cadena_url;
             
             // Validamos que este logueado
-            if(!($metodo_peticion == "GET" && $peticion == "cron") && !($metodo_peticion == "GET" && $peticion == "") && !($metodo_peticion == "GET" && $peticion == "login")) {
+            if(!($metodo_peticion == "GET" && $peticion == "cron") && !($metodo_peticion == "GET" && $peticion == "") && !($metodo_peticion == "GET" && $peticion == "login")&& !($metodo_peticion == "POST" && $peticion == "logs")) {
                 $sesion = new \PICAJES\objects\sesion;
                 if($parametros["GET"]["token_sesion"]) $token_sesion = $parametros["GET"]["token_sesion"];
                 if($parametros["POST"]["token_sesion"]) $token_sesion = $parametros["POST"]["token_sesion"];

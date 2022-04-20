@@ -19,6 +19,7 @@ define('TABLE_usuario',                          PREFIJO_BD.'usuarios');
       define('TABLE_usuario_COLUMNA_telefono',              'telefono');
       define('TABLE_usuario_COLUMNA_empresa',               'empresa');
       define('TABLE_usuario_COLUMNA_equipo',                'equipo');
+      define('TABLE_usuario_COLUMNA_barcode',               'barcode');
 
 define('TABLE_sesion',                           PREFIJO_BD.'sesiones');
       define('TABLE_sesion_COLUMNA_id',                     'id');

@@ -37,11 +37,14 @@ class logController extends controller {
         if(empty($id)) {
             $todos_logs = \PICAJES\objects\log::todos_logs();
             foreach ($todos_logs as $log) {
+                $usuario = new \PICAJES\objects\user($log->get_usuario());
+                $puesto_fichaje = new \PICAJES\objects\puestofichaje($log->get_puestofichaje());
+
                 $array[] = array(
                     "id" => \PICAJES\helpers\cifrar::cifrar($log->get_id()),
                     "alt_date" => $log->get_altdate(),
-                    "usuario" => $log->get_usuario(),
-                    "puesto_fichaje" => $log->get_puestofichaje(),
+                    "usuario" => $usuario->get_nombre(),
+                    "puesto_fichaje" => $puesto_fichaje->get_nombre(),
                     "tipo_movimiento" => $log->get_tipomovimiento()
                 );
             }
@@ -56,11 +59,14 @@ class logController extends controller {
             $log->establish();
 
             if(!empty($log->get_altdate())) {
+                $usuario = new \PICAJES\objects\user($log->get_usuario());
+                $puesto_fichaje = new \PICAJES\objects\puestofichaje($log->get_puestofichaje());
+
                 $array = array(
                     "id" => \PICAJES\helpers\cifrar::cifrar($log->get_id()),
                     "alt_date" => $log->get_altdate(),
-                    "usuario" => $log->get_usuario(),
-                    "puesto_fichaje" => $log->get_puestofichaje(),
+                    "usuario" => $usuario->get_nombre(),
+                    "puesto_fichaje" => $puesto_fichaje->get_nombre(),
                     "tipo_movimiento" => $log->get_tipomovimiento()
                 );
 
@@ -85,26 +91,38 @@ class logController extends controller {
      * @return salida
      */
     function crear_log($parametros) {
-        $usuario = $parametros["POST"]["usuario"];
+        $barcode = $parametros["POST"]["barcode"];
         $puesto_fichaje = $parametros["POST"]["puesto_fichaje"];
-        $tipo_movimiento = $parametros["POST"]["tipo_movimiento"];
+        $empresa = $parametros["POST"]["empresa"];
 
-        if(!empty($usuario) && !empty($puesto_fichaje) && !empty($tipo_movimiento)) {
+        if(!empty($barcode) && !empty($puesto_fichaje) && !empty($empresa)) {
             if(1) {
-                $log = new \PICAJES\objects\log();
-                $log->set_usuario($usuario);
-                $log->set_puestofichaje($puesto_fichaje);
-                $log->set_tipomovimiento($tipo_movimiento);
+                $usuario = new \PICAJES\objects\user();
+                $usuario->set_barcode($barcode);
+                $usuario->establish("barcode");
 
-                if($log->create()) {
-                    $salida = new salida();
-                    $salida->set_id_error(201);
-                    $salida->set_salida(HOST_COMPLETO.VERSION_API."/logs/".\PICAJES\helpers\cifrar::cifrar($log->get_id())."/");
-                    return $salida;
+                if($usuario->get_id()) {
+                    $log = new \PICAJES\objects\log();
+                    $log->set_usuario($usuario->get_id());
+                    $log->set_puestofichaje($puesto_fichaje);
+                    $log->set_empresa($empresa);
+                    $log->set_tipomovimiento(1);
+
+                    if($log->create()) {
+                        $salida = new salida();
+                        $salida->set_id_error(201);
+                        $salida->set_error("Entrada de ".$usuario->get_nombre());
+                        return $salida;
+                    }else{
+                        $salida = new salida();
+                        $salida->set_id_error(500);
+                        $salida->set_error("Error creando el log");
+                        return $salida;
+                    }
                 }else{
                     $salida = new salida();
                     $salida->set_id_error(500);
-                    $salida->set_error("Error creando el log");
+                    $salida->set_error("Tarjeta no registrada en el sistema");
                     return $salida;
                 }
             }
