@@ -98,6 +98,13 @@ class fichaje {
     public $min_tot;
 
     /**
+     * Fecha
+     * @var date
+     * @access public
+     */
+    public $fch;
+
+    /**
      * Iniciamos el objeto fichaje con la posibilidad de aportar un codigó para que se establezcan todas las variables
      * 
      * @access public
@@ -442,6 +449,31 @@ class fichaje {
     }
 
     /**
+     * Establecemos la fecha
+     * 
+     * @access public
+     * @param date $fch
+     * @return boolean
+    */
+    public function set_fch($fch) {
+        if($this->fch = $fch) {
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+
+    /**
+     * Obtenemos la fecha
+     * 
+     * @access public
+     * @return int
+    */
+    public function get_fch() {
+        return $this->fch;
+    }
+
+    /**
      * Con esta función configuramos todas las variables del objeto
      * 
      * @access public
@@ -472,6 +504,7 @@ class fichaje {
                 $this->set_min_dsc($data[TABLE_fichajes_COLUMNA_min_dsc]);
                 $this->set_min_tot($data[TABLE_fichajes_COLUMNA_min_tot]);
                 $this->set_estado($data[TABLE_fichajes_COLUMNA_estado]);
+                $this->set_fch($data[TABLE_fichajes_COLUMNA_fch]);
               
                 $this->establish = 1;
                 return TRUE;

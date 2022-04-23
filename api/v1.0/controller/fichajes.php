@@ -37,10 +37,13 @@ class fichajeController extends controller {
         if(empty($id)) {
             $todos_fichajes = \PICAJES\objects\fichaje::todos_fichajes($GLOBALS["empresa_id"]);
             foreach ($todos_fichajes as $fichaje) {
+                $usuario = new \PICAJES\objects\user($fichaje->get_usuario());
+                $equipo = new \PICAJES\objects\equipo($fichaje->get_equipo());
+
                 $array[] = array(
                     "id" => \PICAJES\helpers\cifrar::cifrar($fichaje->get_id()),
-                    "usuario" => $fichaje->get_usuario(),
-                    "equipo" => $fichaje->get_equipo(),
+                    "usuario" => $usuario->get_nombre(),
+                    "equipo" => $equipo->get_nombre(),
                     "empresa" => $fichaje->get_empresa(),
                     "hor_ini" => $fichaje->get_hor_ini(),
                     "hor_fin" => $fichaje->get_hor_fin(),
@@ -50,7 +53,8 @@ class fichajeController extends controller {
                     "min_trb" => $fichaje->get_min_trb(),
                     "min_dsc" => $fichaje->get_min_dsc(),
                     "min_tot" => $fichaje->get_min_tot(),
-                    "estado" => $fichaje->get_estado()
+                    "estado" => $fichaje->get_estado(),
+                    "fch" => $fichaje->get_fch()
                 );
             }
 
