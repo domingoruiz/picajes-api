@@ -94,7 +94,7 @@ class logController extends controller {
         $barcode = $parametros["POST"]["barcode"];
         $puesto_fichaje = $parametros["POST"]["puesto_fichaje"];
         $empresa = $parametros["POST"]["empresa"];
-
+        
         if(!empty($barcode) && !empty($puesto_fichaje) && !empty($empresa)) {
             if(1) {
                 $usuario = new \PICAJES\objects\user();
@@ -103,15 +103,50 @@ class logController extends controller {
 
                 if($usuario->get_id()) {
                     $log = new \PICAJES\objects\log();
+
+                    // Antes de crear el log vemos si existe el fichaje
+                    $fichaje = new \PICAJES\objects\fichaje();
+                    $fichaje->set_usuario($usuario->get_id());
+                    $fichaje->establish("usr_fch");
+
+                    if($fichaje->get_id()!=0) {
+                        if($fichaje->get_estado() == 2) {
+                            $log->set_tipomovimiento(1);
+                            $fichaje->set_estado(1);
+                            $fichaje->update();
+                        }else{
+                            $fichaje->set_hor_fin(date_format(date_create(),"Y-m-d H:i:s"));
+                            $fichaje->set_estado(2);
+                            $fichaje->update();
+
+                            $log->set_tipomovimiento(2);
+                        }
+                    }else{
+                        $fichaje->set_equipo($usuario->get_equipo());
+                        $fichaje->set_empresa($usuario->get_empresa());
+                        $fichaje->set_hor_ini(date_format(date_create(),"Y-m-d H:i:s"));
+                        $fichaje->set_estado(1);
+                        $fichaje->create();
+
+                        $log->set_tipomovimiento(1);
+                    }
+
+                    // Una vez creado el fichaje creamos el log
                     $log->set_usuario($usuario->get_id());
                     $log->set_puestofichaje($puesto_fichaje);
                     $log->set_empresa($empresa);
-                    $log->set_tipomovimiento(1);
-
+                    $log->set_fichaje($fichaje->get_id());
+                    
                     if($log->create()) {
+                        $fichaje->actualizar_tiempos();
+
                         $salida = new salida();
                         $salida->set_id_error(201);
-                        $salida->set_error("Entrada de ".$usuario->get_nombre());
+                        if($log->get_tipomovimiento()==1) {
+                            $salida->set_error("Entrada de ".$usuario->get_nombre());
+                        }elseif($log->get_tipomovimiento()==2) {
+                            $salida->set_error("Salida de ".$usuario->get_nombre());
+                        }
                         return $salida;
                     }else{
                         $salida = new salida();

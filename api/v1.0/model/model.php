@@ -95,7 +95,11 @@ class model {
 
         $values = "";
     	foreach($data as $key=>$value) {
-    		$values .= '\''.$value.'\',';
+            if($value!="") {
+                $values .= '\''.$value.'\',';
+            }else{
+                $values .= 'NULL,';
+            }
     		next($data);
     	}
     	$values = substr($values, 0, -1);
@@ -120,7 +124,11 @@ class model {
     public function update($table, $data=array(), $where=array()) {
         $values = "";
         foreach($data as $key=>$value) {
-            $values .= ''.$key.' = \''.$value.'\', ';
+            if($value!="") {
+                $values .= ''.$key.' = \''.$value.'\', ';
+            }else{
+                $values .= ''.$key.' = null, ';
+            }
         }
         $values = substr($values, 0, -2);
 

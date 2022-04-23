@@ -47,16 +47,18 @@ class logModel {
      * @param int $puesto_fichaje Puesto de fichaje
      * @param int $tipo_movimiento Tipo de movimiento
      * @param int $empresa Empresa
+     * @param int $fichaje Fichaje
      * @return boolean
     */
-    function guardar(int $usuario, int $puesto_fichaje, int $tipo_movimiento, int $empresa) {
+    function guardar(int $usuario, int $puesto_fichaje, int $tipo_movimiento, int $empresa, int $fichaje) {
         return $this->model->insert(
                 TABLE_logs, 
                 array(
                     TABLE_logs_COLUMNA_usuario => $usuario, 
                     TABLE_logs_COLUMNA_puestofichaje => $puesto_fichaje,
                     TABLE_logs_COLUMNA_tipomovimiento => $tipo_movimiento,
-                    TABLE_logs_COLUMNA_empresa => $empresa
+                    TABLE_logs_COLUMNA_empresa => $empresa,
+                    TABLE_logs_COLUMNA_fichaje => $fichaje
                     )
                 );
     }
@@ -69,15 +71,17 @@ class logModel {
      * @param int $usuario Usuario
      * @param int $puesto_fichaje Puesto de fichaje
      * @param int $tipo_movimiento Tipo de movimiento
+     * @param int $fichaje Fichaje
      * @return boolean
      */
-    function update(int $log_id, int $usuario, int $puesto_fichaje, int $tipo_movimiento) {
+    function update(int $log_id, int $usuario, int $puesto_fichaje, int $tipo_movimiento, int $fichaje) {
         return $this->model->update(
                 TABLE_logs, 
                 array(
                     TABLE_logs_COLUMNA_usuario => $usuario, 
                     TABLE_logs_COLUMNA_puestofichaje => $puesto_fichaje,
-                    TABLE_logs_COLUMNA_tipomovimiento => $tipo_movimiento
+                    TABLE_logs_COLUMNA_tipomovimiento => $tipo_movimiento,
+                    TABLE_logs_COLUMNA_fichaje => $fichaje
                      ),
                 array(
                     TABLE_logs_COLUMNA_id => $log_id
@@ -113,8 +117,8 @@ class logModel {
      * @access public
      * @return object
      */
-    function get_todos($empresa = null) {
-        return $this->model->only_query(TABLE_logs, array("empresa" => $empresa));
+    function get_todos($empresa = null, $fichaje = null) {
+        return $this->model->only_query(TABLE_logs, array("empresa" => $empresa, "fichajes" => $fichaje), array("alt_date" => "asc"));
     }
 
     /**

@@ -38,4 +38,6 @@ $routes['POST.logs'] =                                               array("logC
 $routes['PUT.logs'] =                                                array("logController", "actualizar_log");
 $routes['DELETE.logs'] =                                             array("logController", "eliminar_log");
 
+$routes['GET.fichajes'] =                                            array("fichajeController", "obtener_datos");
+
 define("routes", $routes);

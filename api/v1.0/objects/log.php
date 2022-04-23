@@ -225,6 +225,31 @@ class log {
     }
 
     /**
+     * Establecemos el id del fichaje
+     * 
+     * @access public
+     * @param int $fichaje
+     * @return boolean
+    */
+    public function set_fichaje($fichaje) {
+        if($this->fichaje = (int) $fichaje) {
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+    
+    /**
+     * Obtenemos el id del fichaje
+     * 
+     * @access public
+     * @return int
+    */
+    public function get_fichaje() {
+        return $this->fichaje;
+    }
+
+    /**
      * Con esta función configuramos todas las variables del objeto
      * 
      * @access public
@@ -246,6 +271,7 @@ class log {
               $this->set_tipomovimiento($data[TABLE_logs_COLUMNA_tipomovimiento]);
               $this->set_altdate($data[TABLE_logs_COLUMNA_altdate]);
               $this->set_empresa($data[TABLE_logs_COLUMNA_empresa]);
+              $this->set_fichaje($data[TABLE_logs_COLUMNA_fichaje]);
               
               $this->establish = 1;
               return TRUE;
@@ -274,7 +300,8 @@ class log {
                         $this->get_usuario(), 
                         $this->get_puestofichaje(), 
                         $this->get_tipomovimiento(), 
-                        $this->get_empresa()
+                        $this->get_empresa(), 
+                        $this->get_fichaje()
                       );
 
             if(\PICAJES\helpers\arrays::array_equal($ok)) {
@@ -314,7 +341,7 @@ class log {
     */
     public function update() {
         if(!empty($this->get_id())) {
-           return $this->model->update($this->get_id(), $this->get_usuario(), $this->get_puestofichaje(), $this->get_tipomovimiento());
+           return $this->model->update($this->get_id(), $this->get_usuario(), $this->get_puestofichaje(), $this->get_tipomovimiento(), $this->get_fichaje());
         }else{
             return FALSE;
         }
@@ -351,11 +378,11 @@ class log {
      * @access public
      * @return array
      */
-    static function todos_logs() {
+    static function todos_logs($fichaje = null) {
         $model = new \PICAJES\models\logModel();
 
         $return = array();
-        $logs_todos = $model->get_todos($GLOBALS['empresa_id']);
+        $logs_todos = $model->get_todos($GLOBALS['empresa_id'], $fichaje);
 
         while ($log = $logs_todos->fetch_array()) {
             $return[] = new \PICAJES\objects\log($log[TABLE_logs_COLUMNA_id]);

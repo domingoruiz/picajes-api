@@ -126,7 +126,11 @@ class api {
         // Cargamos el controlador y acción
         if(!empty($controller) && !empty($action)) {
             $parametros["GET"] = \PICAJES\helpers\arrays::clean_array($_GET);
-            $parametros["POST"] = array_merge($_POST, json_decode(file_get_contents('php://input'), true));
+            if(json_decode(file_get_contents('php://input'), true)) {
+                $parametros["POST"] = array_merge($_POST, json_decode(file_get_contents('php://input'), true));
+            }else{
+                $parametros["POST"] = $_POST;
+            }
             $parametros["POST"] = \PICAJES\helpers\arrays::clean_array($parametros["POST"]);
             $parametros["URL"] = $cadena_url;
             
