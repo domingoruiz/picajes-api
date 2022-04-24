@@ -41,7 +41,8 @@ class puestofichajeController extends controller {
                 $array[] = array(
                     "id" => \PICAJES\helpers\cifrar::cifrar($puestofichaje->get_id()),
                     "nombre" => $puestofichaje->get_nombre(),
-                    "zona" => $zona->get_nombre()
+                    "zona" => $zona->get_nombre(),
+                    "empresa" => \PICAJES\helpers\cifrar::cifrar($puestofichaje->get_empresa())
                 );
             }
 
@@ -58,7 +59,8 @@ class puestofichajeController extends controller {
                 $array = array(
                     "id" => \PICAJES\helpers\cifrar::cifrar($puestofichaje->get_id()),
                     "nombre" => $puestofichaje->get_nombre(),
-                    "zona" => \PICAJES\helpers\cifrar::cifrar($puestofichaje->get_zona())
+                    "zona" => \PICAJES\helpers\cifrar::cifrar($puestofichaje->get_zona()),
+                    "empresa" => \PICAJES\helpers\cifrar::cifrar($puestofichaje->get_empresa())
                 );
 
                 $salida = new salida();

@@ -40,6 +40,22 @@ class fichajeController extends controller {
                 $usuario = new \PICAJES\objects\user($fichaje->get_usuario());
                 $equipo = new \PICAJES\objects\equipo($fichaje->get_equipo());
 
+                // Calculamos el tiempo trabajado en caso de que no este cerrado
+                if($fichaje->get_estado()==1) {
+                    $tim_trb = \PICAJES\helpers\date::separar_hora(date_format(date_create($fichaje->get_tim_trb()), "H:i:s")) +\PICAJES\helpers\date::separar_hora(date_format(date_create(), "H:i:s")) - \PICAJES\helpers\date::separar_hora(date_format(date_create($fichaje->get_moddate()), "H:i:s"));
+                    $tim_trb = \PICAJES\helpers\date::unir_hora($tim_trb);
+                    $min_trb = \PICAJES\helpers\date::separar_hora($tim_trb)/60;
+
+                    $tim_tot = \PICAJES\helpers\date::separar_hora($tim_trb) + \PICAJES\helpers\date::separar_hora($fichaje->get_tim_dsc());
+                    $tim_tot = \PICAJES\helpers\date::unir_hora($tim_tot);
+                    $min_tot = \PICAJES\helpers\date::separar_hora($tim_tot)/60;
+                }else{
+                    $tim_trb = $fichaje->get_tim_trb();
+                    $min_trb = \PICAJES\helpers\date::separar_hora($tim_trb)/60;
+                    $tim_tot = $fichaje->get_tim_tot();
+                    $min_tot = $fichaje->get_min_tot();
+                }
+
                 $array[] = array(
                     "id" => \PICAJES\helpers\cifrar::cifrar($fichaje->get_id()),
                     "usuario" => $usuario->get_nombre(),
@@ -47,12 +63,12 @@ class fichajeController extends controller {
                     "empresa" => $fichaje->get_empresa(),
                     "hor_ini" => $fichaje->get_hor_ini(),
                     "hor_fin" => $fichaje->get_hor_fin(),
-                    "tim_trb" => $fichaje->get_tim_trb(),
+                    "tim_trb" => $tim_trb,
                     "tim_dsc" => $fichaje->get_tim_dsc(),
-                    "tim_tot" => $fichaje->get_tim_tot(),
-                    "min_trb" => $fichaje->get_min_trb(),
+                    "tim_tot" => $tim_tot,
+                    "min_trb" => $min_trb,
                     "min_dsc" => $fichaje->get_min_dsc(),
-                    "min_tot" => $fichaje->get_min_tot(),
+                    "min_tot" => $min_tot,
                     "estado" => $fichaje->get_estado(),
                     "fch" => $fichaje->get_fch()
                 );

@@ -105,6 +105,13 @@ class fichaje {
     public $fch;
 
     /**
+     * Mod date
+     * @var date
+     * @access public
+     */
+    public $mod_date;
+
+    /**
      * Iniciamos el objeto fichaje con la posibilidad de aportar un codigó para que se establezcan todas las variables
      * 
      * @access public
@@ -474,6 +481,31 @@ class fichaje {
     }
 
     /**
+     * Establecemos la mod date
+     * 
+     * @access public
+     * @param date $mod_date
+     * @return boolean
+    */
+    public function set_moddate($mod_date) {
+        if($this->mod_date = $mod_date) {
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+
+    /**
+     * Obtenemos la fecha de modificacion
+     * 
+     * @access public
+     * @return int
+    */
+    public function get_moddate() {
+        return $this->mod_date;
+    }
+
+    /**
      * Con esta función configuramos todas las variables del objeto
      * 
      * @access public
@@ -484,7 +516,7 @@ class fichaje {
         if($forma=="id" && !empty($this->get_id())) {
            $where=array("id" => $this->get_id());
         }elseif($forma=="usr_fch" && !empty($this->get_usuario())) {
-            $where=array("usuario" => $this->get_usuario(), "fecha" => date_create("Y-m-d"));
+            $where=array("usuario" => $this->get_usuario(), "fch" => date_format(date_create(), "Y-m-d"));
         }
         
         if(!empty($where)) {
@@ -505,6 +537,7 @@ class fichaje {
                 $this->set_min_tot($data[TABLE_fichajes_COLUMNA_min_tot]);
                 $this->set_estado($data[TABLE_fichajes_COLUMNA_estado]);
                 $this->set_fch($data[TABLE_fichajes_COLUMNA_fch]);
+                $this->set_moddate($data[TABLE_fichajes_COLUMNA_mod_date]);
               
                 $this->establish = 1;
                 return TRUE;
@@ -610,13 +643,12 @@ class fichaje {
     */
     public function actualizar_tiempos() {
         if(!empty($this->get_id())) {
-            $logs = \PICAJES\objects\log::todos_logs($this->get_id());
+            $logs = \PICAJES\objects\log::todos_logs($this->get_id(), date_format(date_create(), "Y-m-d"));
             $hor_ini = 0;
             $hor_fin = 0;
             $tim_trb = 0;
             $tim_dsc = 0;
 
-            $logs_array = array();
             foreach($logs as $log) {
                 if($log->get_tipomovimiento() == 1) {
                     $hor_ini = date_format(date_create($log->get_altdate()), "H:i:s");
@@ -630,13 +662,15 @@ class fichaje {
                 }
             }
 
-            $this->set_tim_trb(\PICAJES\helpers\date::unir_hora($tim_trb));
-            $this->set_tim_dsc(\PICAJES\helpers\date::unir_hora($tim_dsc));
-            $this->set_tim_tot(\PICAJES\helpers\date::unir_hora($tim_dsc+$tim_trb));
-            $this->set_min_trb($tim_trb/60);
-            $this->set_min_dsc($tim_dsc/60);
-            $this->set_min_tot(($tim_dsc+$tim_trb)/60);
-            $this->update();
+            if(count($logs) > 1) {
+                $this->set_tim_trb(\PICAJES\helpers\date::unir_hora($tim_trb));
+                $this->set_tim_dsc(\PICAJES\helpers\date::unir_hora($tim_dsc));
+                $this->set_tim_tot(\PICAJES\helpers\date::unir_hora($tim_dsc+$tim_trb));
+                $this->set_min_trb($tim_trb/60);
+                $this->set_min_dsc($tim_dsc/60);
+                $this->set_min_tot(($tim_dsc+$tim_trb)/60);
+                $this->update();
+            }
         }else{
             return FALSE;
         }

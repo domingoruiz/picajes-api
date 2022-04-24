@@ -378,11 +378,11 @@ class log {
      * @access public
      * @return array
      */
-    static function todos_logs($fichaje = null) {
+    static function todos_logs($fichaje = null, $fch = null) {
         $model = new \PICAJES\models\logModel();
 
         $return = array();
-        $logs_todos = $model->get_todos($GLOBALS['empresa_id'], $fichaje);
+        $logs_todos = $model->get_todos($GLOBALS['empresa_id'], $fichaje, $fch);
 
         while ($log = $logs_todos->fetch_array()) {
             $return[] = new \PICAJES\objects\log($log[TABLE_logs_COLUMNA_id]);

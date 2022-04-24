@@ -82,13 +82,12 @@ class equipoController extends controller {
      */
     function crear_equipo($parametros) {
         $nombre = $parametros["POST"]["nombre"];
-        $empresa = $parametros["POST"]["empresa"];
 
-        if(!empty($nombre) && !empty($empresa)) {
+        if(!empty($nombre)) {
             if(1) {
                 $equipo = new \PICAJES\objects\equipo();
                 $equipo->set_nombre($nombre);
-                $equipo->set_empresa($empresa);
+                $equipo->set_empresa($GLOBALS["empresa_id"]);
 
                 if($equipo->create()) {
                     $salida = new salida();
@@ -120,14 +119,13 @@ class equipoController extends controller {
     function actualizar_equipo($parametros) {
         $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
         $nombre = $parametros["POST"]["nombre"];
-        $empresa = $parametros["POST"]["empresa"];
 
-        if(!empty($nombre) && !empty($empresa)) {
+        if(!empty($nombre)) {
             if(!empty($id)) {
                 $equipo = new \PICAJES\objects\equipo($id);
                 if(!empty($equipo->get_id())) {
                     $equipo->set_nombre($nombre);
-                    $equipo->set_empresa($empresa);
+                    $equipo->set_empresa($GLOBALS["empresa_id"]);
 
                     if($equipo->update()) {
                         $salida = new salida();

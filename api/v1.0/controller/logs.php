@@ -92,8 +92,8 @@ class logController extends controller {
      */
     function crear_log($parametros) {
         $barcode = $parametros["POST"]["barcode"];
-        $puesto_fichaje = $parametros["POST"]["puesto_fichaje"];
-        $empresa = $parametros["POST"]["empresa"];
+        $puesto_fichaje = \PICAJES\helpers\cifrar::descifrar($parametros["POST"]["puesto_fichaje"]);
+        $empresa = \PICAJES\helpers\cifrar::descifrar($parametros["POST"]["empresa"]);
         
         if(!empty($barcode) && !empty($puesto_fichaje) && !empty($empresa)) {
             if(1) {
@@ -101,7 +101,7 @@ class logController extends controller {
                 $usuario->set_barcode($barcode);
                 $usuario->establish("barcode");
 
-                if($usuario->get_id()) {
+                if($usuario->get_id() && ($usuario->get_empresa() == $empresa)) {
                     $log = new \PICAJES\objects\log();
 
                     // Antes de crear el log vemos si existe el fichaje
@@ -142,6 +142,7 @@ class logController extends controller {
 
                         $salida = new salida();
                         $salida->set_id_error(201);
+                        
                         if($log->get_tipomovimiento()==1) {
                             $salida->set_error("Entrada de ".$usuario->get_nombre());
                         }elseif($log->get_tipomovimiento()==2) {

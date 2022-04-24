@@ -81,13 +81,12 @@ class zonaController extends controller {
      */
     function crear_zona($parametros) {
         $nombre = $parametros["POST"]["nombre"];
-        $empresa = $parametros["POST"]["empresa"];
 
-        if(!empty($nombre) && !empty($empresa)) {
+        if(!empty($nombre)) {
             if(1) {
                 $zona = new \PICAJES\objects\zona();
                 $zona->set_nombre($nombre);
-                $zona->set_empresa($empresa);
+                $zona->set_empresa($GLOBALS["empresa_id"]);
 
                 if($zona->create()) {
                     $salida = new salida();

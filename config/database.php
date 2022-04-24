@@ -76,3 +76,4 @@ define('TABLE_fichajes',                          PREFIJO_BD.'fichajes');
       define('TABLE_fichajes_COLUMNA_min_tot',                   'min_tot');
       define('TABLE_fichajes_COLUMNA_estado',                    'estado');
       define('TABLE_fichajes_COLUMNA_fch',                       'fch');
+      define('TABLE_fichajes_COLUMNA_mod_date',                  'mod_date');
