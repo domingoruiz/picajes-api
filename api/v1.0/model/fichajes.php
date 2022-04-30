@@ -147,8 +147,22 @@ class fichajeModel {
      * @access public
      * @return object
      */
-    function get_todos($empresa = null) {
-        return $this->model->only_query(TABLE_fichajes, array("empresa" => $empresa));
+    function get_todos($empresa, $fch_ini, $fch_fin, $equipo, $usuario, $estado) {
+        $equipo = ($equipo > 0) ? " AND  ".TABLE_fichajes_COLUMNA_equipo." = '".$equipo."'" : '';
+        $usuario = ($usuario > 0) ? " AND  ".TABLE_fichajes_COLUMNA_usuario." = '".$usuario."'" : '';
+        $estado = ($estado > 0) ? " AND  ".TABLE_fichajes_COLUMNA_estado." = '".$estado."'" : '';
+
+        $query = "
+            SELECT * 
+            FROM ".TABLE_fichajes." 
+            WHERE ".TABLE_fichajes_COLUMNA_empresa." = '".$empresa."' 
+            AND ".TABLE_fichajes_COLUMNA_fch." >= '".$fch_ini."' 
+            AND ".TABLE_fichajes_COLUMNA_fch." <= '".$fch_fin."'
+            ".$equipo."
+            ".$usuario."
+            ".$estado."
+        ";
+        return $this->model->query($query);
     }
 
     /**

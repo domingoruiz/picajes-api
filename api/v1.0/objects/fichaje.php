@@ -707,11 +707,11 @@ class fichaje {
      * @access public
      * @return array
      */
-    static function todos_fichajes() {
+    static function todos_fichajes($empresa, $fch_ini, $fch_fin, $equipo, $usuario, $estado) {
         $model = new \PICAJES\models\fichajeModel();
 
         $return = array();
-        $fichajes_todos = $model->get_todos($GLOBALS['empresa_id']);
+        $fichajes_todos = $model->get_todos($empresa, $fch_ini, $fch_fin, $equipo, $usuario, $estado);
 
         while ($fichaje = $fichajes_todos->fetch_array()) {
             $return[] = new \PICAJES\objects\fichaje($fichaje[TABLE_fichajes_COLUMNA_id]);
