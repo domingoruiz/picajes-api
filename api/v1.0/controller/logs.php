@@ -33,26 +33,37 @@ class logController extends controller {
      */
     function obtener_datos($parametros) {
         $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
+        $fch_ini = $parametros["GET"]["fch_ini"] ? $parametros["GET"]["fch_ini"] : date_format(date_create(), "Y-m-d");
+        $fch_fin = $parametros["GET"]["fch_fin"] ? $parametros["GET"]["fch_fin"] : date_format(date_create(), "Y-m-d");
+        $zona = \PICAJES\helpers\cifrar::descifrar($parametros["GET"]["zona"]);
+        $usuario = \PICAJES\helpers\cifrar::descifrar($parametros["GET"]["usuario"]);
 
         if(empty($id)) {
-            $todos_logs = \PICAJES\objects\log::todos_logs();
-            foreach ($todos_logs as $log) {
-                $usuario = new \PICAJES\objects\user($log->get_usuario());
-                $puesto_fichaje = new \PICAJES\objects\puestofichaje($log->get_puestofichaje());
+            if($fch_ini && $fch_fin) {
+                $todos_logs = \PICAJES\objects\log::todos_logs($GLOBALS["empresa_id"], $fch_ini, $fch_fin, $zona, $usuario);
+                foreach ($todos_logs as $log) {
+                    $usuario = new \PICAJES\objects\user($log->get_usuario());
+                    $puesto_fichaje = new \PICAJES\objects\puestofichaje($log->get_puestofichaje());
 
-                $array[] = array(
-                    "id" => \PICAJES\helpers\cifrar::cifrar($log->get_id()),
-                    "alt_date" => $log->get_altdate(),
-                    "usuario" => $usuario->get_nombre(),
-                    "puesto_fichaje" => $puesto_fichaje->get_nombre(),
-                    "tipo_movimiento" => $log->get_tipomovimiento()
-                );
+                    $array[] = array(
+                        "id" => \PICAJES\helpers\cifrar::cifrar($log->get_id()),
+                        "alt_date" => $log->get_altdate(),
+                        "usuario" => $usuario->get_nombre(),
+                        "puesto_fichaje" => $puesto_fichaje->get_nombre(),
+                        "tipo_movimiento" => $log->get_tipomovimiento()
+                    );
+                }
+
+                $salida = new salida();
+                $salida->set_id_error(200);
+                $salida->set_salida($array);
+                return $salida;
+            }else{
+                $salida = new salida();
+                $salida->set_id_error(400);
+                $salida->set_error("Fechas invalidas");
+                return $salida;
             }
-
-            $salida = new salida();
-            $salida->set_id_error(200);
-            $salida->set_salida($array);
-            return $salida;
         }else{
             $log = new \PICAJES\objects\log($id);
 

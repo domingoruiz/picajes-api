@@ -117,8 +117,23 @@ class logModel {
      * @access public
      * @return object
      */
-    function get_todos($empresa = null, $fichaje = null, $fch = null) {
-        return $this->model->only_query(TABLE_logs, array("empresa" => $empresa, "fichajes" => $fichaje, "fch" => $fch), array("alt_date" => "asc"));
+    function get_todos($empresa = null, $fichaje = null, $fch = null, $fch_fin, $zona, $usuario) {
+        $zona = ($zona > 0) ? " AND  ".TABLE_logs_COLUMNA_zona." = '".$zona."'" : '';
+        $usuario = ($usuario > 0) ? " AND  ".TABLE_logs_COLUMNA_usuario." = '".$usuario."'" : '';
+        $fichaje = ($fichaje > 0) ? " AND  ".TABLE_logs_COLUMNA_fichaje." = '".$fichaje."'" : '';
+        $fch = ($fch != null) ? " AND ".TABLE_logs_COLUMNA_fch." >= '".$fch."'" : '';
+        $fch_fin = ($fch_fin != null) ? " AND ".TABLE_logs_COLUMNA_fch." <= '".$fch_fin."'": '';
+
+        $query = "
+            SELECT * 
+            FROM ".TABLE_logs." 
+            WHERE ".TABLE_logs_COLUMNA_empresa." = '".$empresa."' 
+            ".$fch." 
+            ".$fch_fin." 
+            ".$zona."
+            ".$usuario."
+        ";
+        return $this->model->query($query);
     }
 
     /**
