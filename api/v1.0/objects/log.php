@@ -378,7 +378,7 @@ class log {
      * @access public
      * @return array
      */
-    static function todos_logs($fichaje = null, $fch = null, $fch_fin, $zona, $usuario) {
+    static function todos_logs($fichaje = null, $fch = null, $fch_fin = null, $zona = null, $usuario = null) {
         $model = new \PICAJES\models\logModel();
 
         $return = array();

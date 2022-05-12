@@ -135,7 +135,7 @@ class api {
             $parametros["URL"] = $cadena_url;
             
             // Validamos que este logueado
-            if(!($metodo_peticion == "GET" && $peticion == "cron") && !($metodo_peticion == "GET" && $peticion == "") && !($metodo_peticion == "GET" && $peticion == "login")&& !($metodo_peticion == "POST" && $peticion == "logs")) {
+            if(!($metodo_peticion == "GET" && $peticion == "cron") && !($metodo_peticion == "GET" && $peticion == "") && !($metodo_peticion == "GET" && $peticion == "login")&& !($metodo_peticion == "POST" && $peticion == "logs")&& !($metodo_peticion == "GET" && $peticion == "empresas")&& !($metodo_peticion == "GET" && $peticion == "puestofichajes")) {
                 $sesion = new \PICAJES\objects\sesion;
                 if($parametros["GET"]["token_sesion"]) $token_sesion = $parametros["GET"]["token_sesion"];
                 if($parametros["POST"]["token_sesion"]) $token_sesion = $parametros["POST"]["token_sesion"];
@@ -154,6 +154,7 @@ class api {
                     $json = $salida->generar_salida();
                 }
             }else{
+                $empresa_id = \PICAJES\helpers\cifrar::descifrar($parametros["POST"]["empresa"]);
                 $controller = new $controller();
                 $json = $controller->$action($parametros)->generar_salida();
             }

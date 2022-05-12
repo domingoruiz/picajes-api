@@ -117,12 +117,12 @@ class logModel {
      * @access public
      * @return object
      */
-    function get_todos($empresa = null, $fichaje = null, $fch = null, $fch_fin, $zona, $usuario) {
+    function get_todos($empresa = null, $fichaje = 0, $fch = null, $fch_fin = null, $zona = 0, $usuario = 0) {
         $zona = ($zona > 0) ? " AND  ".TABLE_logs_COLUMNA_zona." = '".$zona."'" : '';
         $usuario = ($usuario > 0) ? " AND  ".TABLE_logs_COLUMNA_usuario." = '".$usuario."'" : '';
         $fichaje = ($fichaje > 0) ? " AND  ".TABLE_logs_COLUMNA_fichaje." = '".$fichaje."'" : '';
-        $fch = ($fch != null) ? " AND ".TABLE_logs_COLUMNA_fch." >= '".$fch."'" : '';
-        $fch_fin = ($fch_fin != null) ? " AND ".TABLE_logs_COLUMNA_fch." <= '".$fch_fin."'": '';
+        $fch = ($fch != null && $fch_fin != null) ? " AND ".TABLE_logs_COLUMNA_fch." >= '".$fch."'"." AND ".TABLE_logs_COLUMNA_fch." <= '".$fch_fin."'" : '';
+        $fch = ($fch != null && $fch_fin == null) ? " AND ".TABLE_logs_COLUMNA_fch." = '".$fch."'" : '';
 
         $query = "
             SELECT * 
@@ -133,6 +133,7 @@ class logModel {
             ".$zona."
             ".$usuario."
         ";
+        
         return $this->model->query($query);
     }
 
