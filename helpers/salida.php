@@ -94,16 +94,6 @@ class salida {
         }
 
 
-        // Guardamos en LOG la peticion
-        $cadena_url = "/".explode(HOST_COMPLETO, HOST.substr($_SERVER["REQUEST_URI"], 1))[1];
-        $cadena_url = parse_url(substr(HOST, 0,-1).$cadena_url, PHP_URL_PATH);
-        $metodo_peticion = $_SERVER['REQUEST_METHOD'];
-
-        $cadena = "[" . date("Y-m-d h:i:s") . "]" . " [" . EJECUCION . "] " . print_r(array("peticion" => $metodo_peticion . " " . $cadena_url, "salida" => $this->salida, "error" => $this->error), TRUE);
-        $file = fopen(ROUTELOG . LOGPICAJES, "a");
-        fwrite($file, $cadena . PHP_EOL);
-        fclose($file);
-
         return json_encode(
             array(
                 "salida" => $this->salida,

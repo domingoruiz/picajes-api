@@ -186,7 +186,7 @@ class api {
         }else{
             $salida = new \PICAJES\helpers\salida();
             $salida->set_id_error(500);
-            $salida->set_error("ERROR con la base de datos. Consultar LOG errores.");
+            $salida->set_error("ERROR con la base de datos.");
             return $salida->generar_salida();
         }
     }
