@@ -76,7 +76,7 @@ class fichajeController extends controller {
                         "min_dsc" => $fichaje->get_min_dsc(),
                         "min_tot" => $min_tot,
                         "estado" => $fichaje->get_estado(),
-                        "fch" => $fichaje->get_fch()
+                        "fch" => date_format(date_create($fichaje->get_fch()), "d-m-Y")
                     );
                 }
     

@@ -105,7 +105,7 @@ class usuarioController extends controller {
         }else{
             $user = new \PICAJES\objects\user($id);
 
-            if(!empty($user->get_contrasenia())) {
+            if(!empty($user->get_usuario())) {
                 $array = array(
                     "id" => \PICAJES\helpers\cifrar::cifrar($user->get_id()),
                     "usuario" => $user->get_usuario(),
@@ -147,7 +147,7 @@ class usuarioController extends controller {
         $barcode = $parametros["POST"]["barcode"];
         $equipo = \PICAJES\helpers\cifrar::descifrar($parametros["POST"]["equipo"]);
         
-        if(!empty($nombre) && !empty($email) && !empty($usuario) && !empty($password) && !empty($equipo)) {
+        if(!empty($nombre) && !empty($usuario)) {
             $user = new \PICAJES\objects\user;
             $user->set_usuario($usuario);
             $user->establish("usuario");
@@ -207,7 +207,7 @@ class usuarioController extends controller {
         $barcode = $parametros["POST"]["barcode"];
         $equipo = \PICAJES\helpers\cifrar::descifrar($parametros["POST"]["equipo"]);
 
-        if(!empty($nombre) && $email && !empty($usuario) && !empty($password) && !empty($equipo)) {
+        if(!empty($nombre) && !empty($usuario)) {
             if(!empty($id)) {
                 $user = new \PICAJES\objects\user($id);
                 if(!empty($user->get_usuario())) {

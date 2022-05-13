@@ -380,7 +380,7 @@ class log {
      */
     static function todos_logs($fichaje = null, $fch = null, $fch_fin = null, $zona = null, $usuario = null) {
         $model = new \PICAJES\models\logModel();
-
+        
         $return = array();
         $logs_todos = $model->get_todos($GLOBALS['empresa_id'], $fichaje, $fch, $fch_fin, $zona, $usuario);
 

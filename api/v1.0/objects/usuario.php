@@ -369,9 +369,7 @@ class user {
     */
     public function create() {
         if(!empty($this->get_usuario()) &&
-           !empty($this->get_contrasenia()) &&
-           !empty($this->get_nombre()) &&
-           !empty($this->get_email())) {
+           !empty($this->get_nombre())) {
             //Guardamos el usuario en la BD
             $ok[] = $this->model->guardar(
                         $this->get_usuario(), 

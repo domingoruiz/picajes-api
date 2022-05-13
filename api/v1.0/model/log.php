@@ -117,19 +117,18 @@ class logModel {
      * @access public
      * @return object
      */
-    function get_todos($empresa = null, $fichaje = 0, $fch = null, $fch_fin = null, $zona = 0, $usuario = 0) {
+    function get_todos($empresa = null, $fichaje = 0, $fch_ini = null, $fch_fin = null, $zona = 0, $usuario = 0) {
         $zona = ($zona > 0) ? " AND  ".TABLE_logs_COLUMNA_zona." = '".$zona."'" : '';
         $usuario = ($usuario > 0) ? " AND  ".TABLE_logs_COLUMNA_usuario." = '".$usuario."'" : '';
         $fichaje = ($fichaje > 0) ? " AND  ".TABLE_logs_COLUMNA_fichaje." = '".$fichaje."'" : '';
-        $fch = ($fch != null && $fch_fin != null) ? " AND ".TABLE_logs_COLUMNA_fch." >= '".$fch."'"." AND ".TABLE_logs_COLUMNA_fch." <= '".$fch_fin."'" : '';
-        $fch = ($fch != null && $fch_fin == null) ? " AND ".TABLE_logs_COLUMNA_fch." = '".$fch."'" : '';
-
+        $fch = ($fch_ini != '' && $fch_fin != '') ? " AND ".TABLE_logs_COLUMNA_fch." >= '".$fch_ini."'"." AND ".TABLE_logs_COLUMNA_fch." <= '".$fch_fin."'" : null;
+        $fch = ($fch_ini != '' && $fch_fin == '') ? " AND ".TABLE_logs_COLUMNA_fch." = '".$fch_ini."'" : $fch;
+        
         $query = "
             SELECT * 
             FROM ".TABLE_logs." 
             WHERE ".TABLE_logs_COLUMNA_empresa." = '".$empresa."' 
             ".$fch." 
-            ".$fch_fin." 
             ".$zona."
             ".$usuario."
         ";

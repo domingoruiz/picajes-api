@@ -33,21 +33,21 @@ class logController extends controller {
      */
     function obtener_datos($parametros) {
         $id = \PICAJES\helpers\cifrar::descifrar($parametros["URL"]["3"]);
-        $fch_ini = $parametros["GET"]["fch_ini"] ? $parametros["GET"]["fch_ini"] : date_format(date_create(), "Y-m-d");
-        $fch_fin = $parametros["GET"]["fch_fin"] ? $parametros["GET"]["fch_fin"] : date_format(date_create(), "Y-m-d");
+        $fch_ini = $parametros["GET"]["fch_ini"] != '' ? $parametros["GET"]["fch_ini"] : date_format(date_create(), "Y-m-d");
+        $fch_fin = $parametros["GET"]["fch_fin"] != '' ? $parametros["GET"]["fch_fin"] : date_format(date_create(), "Y-m-d");
         $zona = \PICAJES\helpers\cifrar::descifrar($parametros["GET"]["zona"]);
         $usuario = \PICAJES\helpers\cifrar::descifrar($parametros["GET"]["usuario"]);
 
         if(empty($id)) {
             if($fch_ini && $fch_fin) {
-                $todos_logs = \PICAJES\objects\log::todos_logs($GLOBALS["empresa_id"], $fch_ini, $fch_fin, $zona, $usuario);
+                $todos_logs = \PICAJES\objects\log::todos_logs(null, $fch_ini, $fch_fin, $zona, $usuario);
                 foreach ($todos_logs as $log) {
                     $usuario = new \PICAJES\objects\user($log->get_usuario());
                     $puesto_fichaje = new \PICAJES\objects\puestofichaje($log->get_puestofichaje());
 
                     $array[] = array(
                         "id" => \PICAJES\helpers\cifrar::cifrar($log->get_id()),
-                        "alt_date" => $log->get_altdate(),
+                        "alt_date" => date_format(date_create($log->get_altdate()), "d-m-Y H:i:s"),
                         "usuario" => $usuario->get_nombre(),
                         "puesto_fichaje" => $puesto_fichaje->get_nombre(),
                         "tipo_movimiento" => $log->get_tipomovimiento()
