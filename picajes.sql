@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 13-05-2022 a las 18:09:55
+-- Tiempo de generación: 06-06-2022 a las 18:35:16
 -- Versión del servidor: 10.3.28-MariaDB
 -- Versión de PHP: 7.2.24
 
@@ -106,7 +106,7 @@ CREATE TABLE `pic_puestofichaje` (
   `id` int(11) NOT NULL,
   `alt_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `mod_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `nombre` varchar(11) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
   `zona` int(11) NOT NULL,
   `empresa` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
@@ -137,8 +137,8 @@ CREATE TABLE `pic_usuarios` (
   `id` int(11) NOT NULL,
   `alt_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `mod_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `nombre` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `usuario` varchar(11) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `nombre` varchar(40) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `usuario` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
   `contrasenia` varchar(32) COLLATE utf8_spanish_ci DEFAULT NULL,
   `email` varchar(35) COLLATE utf8_spanish_ci DEFAULT NULL,
   `telefono` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
@@ -160,6 +160,130 @@ CREATE TABLE `pic_zonas` (
   `empresa` int(11) NOT NULL,
   `nombre` varchar(20) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `v_pic_fichajes`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `v_pic_fichajes` (
+`id` int(11)
+,`fch` date
+,`semana` int(2)
+,`año` int(4)
+,`equipo_usuario` varchar(11)
+,`usuario` varchar(40)
+,`hor_ini` varchar(8)
+,`hor_fin` varchar(8)
+,`tim_trb` time
+,`tim_dsc` time
+,`tim_tot` time
+,`min_trb` int(11)
+,`min_dsc` int(11)
+,`min_tot` int(11)
+,`estado` varchar(6)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `v_pic_fichajes_datetime`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `v_pic_fichajes_datetime` (
+`id` int(11)
+,`fch` datetime
+,`semana` int(2)
+,`año` int(4)
+,`equipo_usuario` varchar(11)
+,`usuario` varchar(40)
+,`hor_ini` varchar(8)
+,`hor_fin` varchar(8)
+,`tim_trb` time
+,`tim_dsc` time
+,`tim_tot` time
+,`min_trb` decimal(14,4)
+,`min_dsc` decimal(14,4)
+,`min_tot` decimal(14,4)
+,`estado` varchar(6)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `v_pic_log`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `v_pic_log` (
+`id` int(11)
+,`fch` date
+,`semana` int(2)
+,`año` int(4)
+,`fecha_hora` timestamp
+,`equipo_usuario` varchar(11)
+,`usuario` varchar(40)
+,`puesto_fichaje_zona` varchar(20)
+,`puesto_fichaje` varchar(25)
+,`tipo_movimiento` varchar(7)
+,`su_fichaje` int(11)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `v_pic_log_datetime`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `v_pic_log_datetime` (
+`id` int(11)
+,`fch` datetime
+,`semana` int(2)
+,`año` int(4)
+,`fecha_hora` timestamp
+,`equipo_usuario` varchar(11)
+,`usuario` varchar(40)
+,`puesto_fichaje_zona` varchar(20)
+,`puesto_fichaje` varchar(25)
+,`tipo_movimiento` varchar(7)
+,`su_fichaje` int(11)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `v_pic_fichajes`
+--
+DROP TABLE IF EXISTS `v_pic_fichajes`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `v_pic_fichajes`  AS SELECT `pic_fichajes`.`id` AS `id`, `pic_fichajes`.`fch` AS `fch`, week(`pic_fichajes`.`fch`) AS `semana`, year(`pic_fichajes`.`fch`) AS `año`, `pic_equipos`.`nombre` AS `equipo_usuario`, `pic_usuarios`.`nombre` AS `usuario`, time_format(`pic_fichajes`.`hor_ini`,'%T') AS `hor_ini`, time_format(`pic_fichajes`.`hor_fin`,'%T') AS `hor_fin`, `pic_fichajes`.`tim_trb` AS `tim_trb`, `pic_fichajes`.`tim_dsc` AS `tim_dsc`, `pic_fichajes`.`tim_tot` AS `tim_tot`, `pic_fichajes`.`min_trb` AS `min_trb`, `pic_fichajes`.`min_dsc` AS `min_dsc`, `pic_fichajes`.`min_tot` AS `min_tot`, CASE `pic_fichajes`.`estado` WHEN 1 THEN 'DENTRO' WHEN 2 THEN 'FUERA' ELSE '' END AS `estado` FROM ((`pic_fichajes` left join `pic_usuarios` on(`pic_usuarios`.`id` = `pic_fichajes`.`usuario`)) left join `pic_equipos` on(`pic_equipos`.`id` = `pic_usuarios`.`equipo`))  ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `v_pic_fichajes_datetime`
+--
+DROP TABLE IF EXISTS `v_pic_fichajes_datetime`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `v_pic_fichajes_datetime`  AS SELECT `pic_fichajes`.`id` AS `id`, str_to_date(concat(`pic_fichajes`.`fch`,' 00:00:00'),'%Y-%m-%d %H:%i:%s') AS `fch`, week(`pic_fichajes`.`fch`) AS `semana`, year(`pic_fichajes`.`fch`) AS `año`, `pic_equipos`.`nombre` AS `equipo_usuario`, `pic_usuarios`.`nombre` AS `usuario`, time_format(`pic_fichajes`.`hor_ini`,'%T') AS `hor_ini`, time_format(`pic_fichajes`.`hor_fin`,'%T') AS `hor_fin`, `pic_fichajes`.`tim_trb` AS `tim_trb`, `pic_fichajes`.`tim_dsc` AS `tim_dsc`, `pic_fichajes`.`tim_tot` AS `tim_tot`, `pic_fichajes`.`min_trb`/ 60 AS `min_trb`, `pic_fichajes`.`min_dsc`/ 60 AS `min_dsc`, `pic_fichajes`.`min_tot`/ 60 AS `min_tot`, CASE `pic_fichajes`.`estado` WHEN 1 THEN 'DENTRO' WHEN 2 THEN 'FUERA' ELSE '' END AS `estado` FROM ((`pic_fichajes` left join `pic_usuarios` on(`pic_usuarios`.`id` = `pic_fichajes`.`usuario`)) left join `pic_equipos` on(`pic_equipos`.`id` = `pic_usuarios`.`equipo`))  ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `v_pic_log`
+--
+DROP TABLE IF EXISTS `v_pic_log`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `v_pic_log`  AS SELECT `pic_log`.`id` AS `id`, `pic_log`.`fch` AS `fch`, week(`pic_log`.`fch`) AS `semana`, year(`pic_log`.`fch`) AS `año`, `pic_log`.`alt_date` AS `fecha_hora`, `pic_equipos`.`nombre` AS `equipo_usuario`, `pic_usuarios`.`nombre` AS `usuario`, `pic_zonas`.`nombre` AS `puesto_fichaje_zona`, `pic_puestofichaje`.`nombre` AS `puesto_fichaje`, CASE `pic_log`.`tipo_movimiento` WHEN 1 THEN 'ENTRADA' WHEN 2 THEN 'SALIDA' ELSE '' END AS `tipo_movimiento`, `pic_log`.`fichajes` AS `su_fichaje` FROM ((((`pic_log` left join `pic_usuarios` on(`pic_usuarios`.`id` = `pic_log`.`usuario`)) left join `pic_equipos` on(`pic_equipos`.`id` = `pic_usuarios`.`equipo`)) left join `pic_puestofichaje` on(`pic_puestofichaje`.`id` = `pic_log`.`puestofichaje`)) left join `pic_zonas` on(`pic_zonas`.`id` = `pic_puestofichaje`.`zona`))  ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `v_pic_log_datetime`
+--
+DROP TABLE IF EXISTS `v_pic_log_datetime`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `v_pic_log_datetime`  AS SELECT `pic_log`.`id` AS `id`, str_to_date(concat(`pic_log`.`fch`,' 00:00:00'),'%Y-%m-%d %H:%i:%s') AS `fch`, week(`pic_log`.`fch`) AS `semana`, year(`pic_log`.`fch`) AS `año`, `pic_log`.`alt_date` AS `fecha_hora`, `pic_equipos`.`nombre` AS `equipo_usuario`, `pic_usuarios`.`nombre` AS `usuario`, `pic_zonas`.`nombre` AS `puesto_fichaje_zona`, `pic_puestofichaje`.`nombre` AS `puesto_fichaje`, CASE `pic_log`.`tipo_movimiento` WHEN 1 THEN 'ENTRADA' WHEN 2 THEN 'SALIDA' ELSE '' END AS `tipo_movimiento`, `pic_log`.`fichajes` AS `su_fichaje` FROM ((((`pic_log` left join `pic_usuarios` on(`pic_usuarios`.`id` = `pic_log`.`usuario`)) left join `pic_equipos` on(`pic_equipos`.`id` = `pic_usuarios`.`equipo`)) left join `pic_puestofichaje` on(`pic_puestofichaje`.`id` = `pic_log`.`puestofichaje`)) left join `pic_zonas` on(`pic_zonas`.`id` = `pic_puestofichaje`.`zona`))  ;
 
 --
 -- Índices para tablas volcadas
@@ -292,6 +416,14 @@ ALTER TABLE `pic_zonas`
 --
 ALTER TABLE `pic_equipos`
   ADD CONSTRAINT `fk_empresas` FOREIGN KEY (`empresa`) REFERENCES `pic_empresas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `pic_log`
+--
+ALTER TABLE `pic_log`
+  ADD CONSTRAINT `fk_fichajes` FOREIGN KEY (`fichajes`) REFERENCES `pic_fichajes` (`id`),
+  ADD CONSTRAINT `fk_puestofichaje` FOREIGN KEY (`puestofichaje`) REFERENCES `pic_puestofichaje` (`id`),
+  ADD CONSTRAINT `fk_usuario` FOREIGN KEY (`usuario`) REFERENCES `pic_usuarios` (`id`);
 
 --
 -- Filtros para la tabla `pic_puestofichaje`
