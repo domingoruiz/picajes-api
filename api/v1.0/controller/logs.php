@@ -119,7 +119,7 @@ class logController extends controller {
                     $fichaje = new \PICAJES\objects\fichaje();
                     $fichaje->set_usuario($usuario->get_id());
                     $fichaje->establish("usr_fch");
-
+                    
                     if($fichaje->get_id()!=0) {
                         if($fichaje->get_estado() == 2) {
                             $log->set_tipomovimiento(1);
